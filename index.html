@@ -1,15 +1,997 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Mi página</title>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDM Concesionario</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --blue: #2783DE;
+      --blue-soft: #E5F2FC;
+      --text: #2C2C2B;
+      --text-sec: #7D7A75;
+      --canvas: #FFFFFF;
+      --surface: #F9F8F7;
+      --surface2: #F0EFED;
+      --border: #E6E5E3;
+      --green: #46A171;
+      --orange: #D5803B;
+      --red: #E56458;
+      --radius: 8px;
+      --shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 12px rgba(0,0,0,.06);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--canvas);
+      scroll-behavior: smooth;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--text); }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-sec);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-cta {
+      background: var(--blue);
+      color: #fff !important;
+      padding: 8px 20px;
+      border-radius: var(--radius);
+      transition: opacity .15s !important;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
+
+    /* ─── HERO ─── */
+    #inicio {
+      min-height: calc(100vh - 64px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px;
+      background: linear-gradient(160deg, #0f1b2d 0%, #1a3358 50%, #1e4b8f 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    #inicio::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(39,131,222,0.25) 0%, transparent 65%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(39,131,222,0.2);
+      border: 1px solid rgba(39,131,222,0.4);
+      color: #7ec8f7;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .hero-title em { color: #5fb8f9; font-style: normal; }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.65);
+      max-width: 560px;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: transform .15s, opacity .15s;
+    }
+    .btn:hover { transform: translateY(-1px); opacity: 0.9; }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-outline { background: transparent; border: 1.5px solid rgba(255,255,255,0.35); color: #fff; }
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 64px;
+      position: relative;
+    }
+    .stat-val { font-size: 2rem; font-weight: 800; color: #fff; }
+    .stat-lab { font-size: 0.8rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ─── SECTIONS ─── */
+    section { padding: 96px 24px; }
+    section:nth-child(even) { background: var(--surface); }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      color: var(--text-sec);
+      max-width: 560px;
+      margin-bottom: 48px;
+    }
+
+    /* ─── VEHÍCULOS ─── */
+    .vehicles-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .filter-btn {
+      padding: 8px 18px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--canvas);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--text-sec);
+      transition: all .15s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+    .vehicles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .car-card {
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .car-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+    .car-img {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      background: linear-gradient(135deg, #e8f3fc 0%, #d0e8f8 100%);
+    }
+    .car-body { padding: 20px; }
+    .car-brand { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--blue); }
+    .car-name { font-size: 1.15rem; font-weight: 700; margin: 4px 0 8px; }
+    .car-specs {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .car-spec { font-size: 0.8rem; color: var(--text-sec); display: flex; align-items: center; gap: 4px; }
+    .car-price { font-size: 1.4rem; font-weight: 800; color: var(--text); margin-bottom: 16px; }
+    .car-price span { font-size: 0.85rem; font-weight: 500; color: var(--text-sec); }
+    .car-actions { display: flex; gap: 8px; }
+    .btn-sm {
+      flex: 1;
+      padding: 10px;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+      transition: opacity .15s;
+      text-decoration: none;
+    }
+    .btn-sm:hover { opacity: 0.85; }
+    .btn-sm-primary { background: var(--blue); color: #fff; }
+    .btn-sm-ghost { background: var(--surface2); color: var(--text); }
+
+    /* ─── RESERVA ─── */
+    #reserva .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .reserva-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .reserva-info p { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 24px; }
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+    }
+    .info-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .info-text-title { font-weight: 600; font-size: 0.9rem; }
+    .info-text-sub { font-size: 0.8rem; color: var(--text-sec); }
+    .form-card {
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--canvas);
+      transition: border-color .15s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--blue); }
+    .form-group textarea { min-height: 90px; resize: vertical; }
+    .form-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .form-submit:hover { opacity: 0.85; }
+    .form-note { font-size: 0.78rem; color: var(--text-sec); text-align: center; margin-top: 12px; }
+    #toast {
+      display: none;
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 500;
+      z-index: 999;
+      box-shadow: var(--shadow);
+      animation: fadeIn .3s;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ─── EMPLEADOS ─── */
+    .employees-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .emp-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: transform .15s;
+    }
+    .emp-card:hover { transform: translateY(-2px); }
+    .emp-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .emp-name { font-weight: 700; font-size: 0.95rem; }
+    .emp-role { font-size: 0.8rem; color: var(--text-sec); margin-bottom: 6px; }
+    .emp-phone {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .emp-phone:hover { text-decoration: underline; }
+
+    /* ─── NÓMINA ─── */
+    .nomina-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .nomina-controls select {
+      padding: 8px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-family: inherit;
+      background: var(--canvas);
+      color: var(--text);
+      outline: none;
+    }
+    .nomina-controls select:focus { border-color: var(--blue); }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .nomina-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      background: var(--canvas);
+    }
+    .nomina-table th {
+      background: var(--surface);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-sec);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .nomina-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .nomina-table tr:last-child td { border-bottom: none; }
+    .nomina-table tr:hover td { background: var(--surface); }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .badge-green { background: #e8f5ee; color: var(--green); }
+    .badge-orange { background: #fdf0e2; color: var(--orange); }
+    .badge-red { background: #fdecea; color: var(--red); }
+    .totals-row td { font-weight: 700; background: var(--surface) !important; }
+    .nomina-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .sum-card {
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .sum-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .sum-val { font-size: 1.6rem; font-weight: 800; }
+    .sum-desc { font-size: 0.8rem; margin-top: 2px; }
+    .add-row-btn {
+      padding: 10px 20px;
+      background: var(--surface2);
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-sec);
+      transition: all .15s;
+    }
+    .add-row-btn:hover { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
+    .editable { outline: none; }
+    .editable:focus { background: var(--blue-soft); border-radius: 4px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #0f1b2d;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 40px 24px;
+      font-size: 0.85rem;
+    }
+    footer strong { color: #fff; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; flex-direction: column; position: fixed; top: 64px; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--border); padding: 20px; gap: 20px; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      #reserva .section-inner { grid-template-columns: 1fr; gap: 32px; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; }
+      section { padding: 64px 20px; }
+    }
+  </style>
+</head>
 <body>
 
-    <h1>Mi página web</h1>
+<!-- NAV -->
+<nav>
+  <div class="logo">PDM<span> Concesionario</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#vehiculos">Vehículos</a></li>
+    <li><a href="#reserva">Reservar</a></li>
+    <li><a href="#empleados">Empleados</a></li>
+    <li><a href="#nomina">Nómina</a></li>
+    <li><a href="#reserva" class="nav-cta">Reservar ahora</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
 
-    <p>¡Bienvenido!</p>
+<!-- HERO -->
+<section id="inicio">
+  <div class="hero-badge">🏆 Concesionario Oficial PDM</div>
+  <h1 class="hero-title">Tu próximo vehículo<br>te está <em>esperando</em></h1>
+  <p class="hero-sub">Los mejores coches, las mejores condiciones. Reserva hoy y vive la experiencia PDM.</p>
+  <div class="hero-btns">
+    <a href="#vehiculos" class="btn btn-primary">Ver vehículos</a>
+    <a href="#reserva" class="btn btn-outline">Hacer una reserva</a>
+  </div>
+  <div class="hero-stats">
+    <div><div class="stat-val">+200</div><div class="stat-lab">Vehículos</div></div>
+    <div><div class="stat-val">12</div><div class="stat-lab">Años de exp.</div></div>
+    <div><div class="stat-val">4.9★</div><div class="stat-lab">Valoración</div></div>
+    <div><div class="stat-val">98%</div><div class="stat-lab">Satisfacción</div></div>
+  </div>
+</section>
 
+<!-- VEHÍCULOS -->
+<section id="vehiculos">
+  <div class="section-inner">
+    <div class="section-label">Catálogo</div>
+    <h2 class="section-title">Listado de vehículos</h2>
+    <p class="section-desc">Explora nuestra flota completa. Filtra por tipo y encuentra el coche perfecto para ti.</p>
+    <div class="vehicles-filter">
+      <button class="filter-btn active" onclick="filterCars('todos', this)">Todos</button>
+      <button class="filter-btn" onclick="filterCars('sedan', this)">Sedán</button>
+      <button class="filter-btn" onclick="filterCars('suv', this)">SUV</button>
+      <button class="filter-btn" onclick="filterCars('deportivo', this)">Deportivo</button>
+      <button class="filter-btn" onclick="filterCars('electrico', this)">Eléctrico</button>
+    </div>
+    <div class="vehicles-grid" id="carsGrid">
+      <!-- Cards generated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- RESERVA -->
+<section id="reserva">
+  <div class="section-inner">
+    <div class="reserva-info">
+      <div class="section-label">Reservas</div>
+      <h2 class="section-title">Solicita tu reserva</h2>
+      <p>Rellena el formulario y te contactaremos en menos de 24 horas para confirmar los detalles de tu reserva.</p>
+      <div class="info-item">
+        <div class="info-icon">📅</div>
+        <div>
+          <div class="info-text-title">Reserva sin compromiso</div>
+          <div class="info-text-sub">Cancela gratis hasta 48h antes</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">⚡</div>
+        <div>
+          <div class="info-text-title">Confirmación inmediata</div>
+          <div class="info-text-sub">Recibirás el aviso por Discord y email</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🔒</div>
+        <div>
+          <div class="info-text-title">Datos seguros</div>
+          <div class="info-text-sub">Tu información está protegida con nosotros</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-text-title">¿Prefieres llamar?</div>
+          <div class="info-text-sub">+34 900 000 000 · Lun-Sáb 9h-20h</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="form-card">
+        <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:24px;">Formulario de reserva</h3>
+        <form id="reservaForm" onsubmit="enviarReserva(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre *</label>
+              <input type="text" id="rNombre" placeholder="Ej: Carlos García" required />
+            </div>
+            <div class="form-group">
+              <label>Apellidos *</label>
+              <input type="text" id="rApellidos" placeholder="García López" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" id="rEmail" placeholder="correo@ejemplo.com" required />
+            </div>
+            <div class="form-group">
+              <label>Teléfono *</label>
+              <input type="tel" id="rTelefono" placeholder="+34 600 000 000" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Vehículo de interés *</label>
+            <select id="rVehiculo" required>
+              <option value="">Selecciona un vehículo...</option>
+              <option>BMW Serie 3 2024</option>
+              <option>Audi Q5 2024</option>
+              <option>Mercedes-Benz C220</option>
+              <option>Tesla Model 3</option>
+              <option>Toyota GR Supra</option>
+              <option>Ford Explorer 2024</option>
+              <option>Otro (indicar en comentarios)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Fecha preferida</label>
+              <input type="date" id="rFecha" />
+            </div>
+            <div class="form-group">
+              <label>Hora preferida</label>
+              <select id="rHora">
+                <option>09:00</option><option>10:00</option><option>11:00</option>
+                <option>12:00</option><option>13:00</option><option>16:00</option>
+                <option>17:00</option><option>18:00</option><option>19:00</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Comentarios adicionales</label>
+            <textarea id="rComentarios" placeholder="Cuéntanos algo más sobre lo que buscas..."></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="submitBtn">Enviar solicitud de reserva →</button>
+          <p class="form-note">Al enviar aceptas nuestra política de privacidad. No compartimos tus datos con terceros.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMPLEADOS -->
+<section id="empleados">
+  <div class="section-inner">
+    <div class="section-label">Equipo</div>
+    <h2 class="section-title">Nuestros empleados</h2>
+    <p class="section-desc">Contacta directamente con el miembro de nuestro equipo que mejor puede ayudarte.</p>
+    <div class="employees-grid" id="empGrid">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- NÓMINA -->
+<section id="nomina">
+  <div class="section-inner">
+    <div class="section-label">Administración</div>
+    <h2 class="section-title">Hoja de nómina</h2>
+    <p class="section-desc">Seguimiento mensual del pago de nóminas de todos los empleados. Edita las celdas directamente.</p>
+    <div class="nomina-controls">
+      <label style="font-weight:600; font-size:0.9rem;">Mes:</label>
+      <select id="mesSelect" onchange="actualizarNomina()">
+        <option>Enero 2025</option><option>Febrero 2025</option><option>Marzo 2025</option>
+        <option>Abril 2025</option><option>Mayo 2025</option><option>Junio 2025</option>
+        <option>Julio 2025</option><option>Agosto 2025</option><option selected>Septiembre 2025</option>
+        <option>Octubre 2025</option><option>Noviembre 2025</option><option>Diciembre 2025</option>
+      </select>
+      <button class="add-row-btn" onclick="agregarEmpleadoNomina()">+ Añadir empleado</button>
+      <button class="add-row-btn" onclick="exportarCSV()">📥 Exportar CSV</button>
+    </div>
+    <div class="table-wrap">
+      <table class="nomina-table" id="nominaTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Empleado</th>
+            <th>Puesto</th>
+            <th>Salario base</th>
+            <th>Comisiones</th>
+            <th>Deducciones</th>
+            <th>Neto a pagar</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="nominaBody"></tbody>
+        <tfoot>
+          <tr class="totals-row" id="totalsRow">
+            <td colspan="3">TOTALES</td>
+            <td id="totBase">-</td>
+            <td id="totCom">-</td>
+            <td id="totDed">-</td>
+            <td id="totNeto">-</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="nomina-summary" id="nominaSummary"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom:8px;"><strong>PDM Concesionario</strong></p>
+  <p>Av. del Automóvil 123 · info@pdmconcesionario.es · +34 900 000 000</p>
+  <p style="margin-top:16px; font-size:0.75rem;">© 2025 PDM Concesionario. Todos los derechos reservados.</p>
+</footer>
+
+<div id="toast">✅ Reserva enviada correctamente</div>
+
+<script>
+// ─── CONFIG ───
+// ⚠️ Reemplaza esta URL con tu webhook real de Discord
+const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1549322502545604780/oxJF4uW6Uydh_-wpe3GmmcGJFq-t0GMOVBQZuJMVWvpApOJow4ecrjZzL1JRJr3riJm3';
+
+// ─── DATA ───
+const vehicles = [
+  { brand: 'BMW', name: 'Serie 3 2024', type: 'sedan', km: '0 km', fuel: 'Gasolina', price: '45.900', color: '#4f9def' },
+  { brand: 'Audi', name: 'Q5 2024', type: 'suv', km: '0 km', fuel: 'Diésel', price: '52.500', color: '#e85454' },
+  { brand: 'Mercedes-Benz', name: 'C220 2024', type: 'sedan', km: '12.000 km', fuel: 'Diésel', price: '38.750', color: '#2C2C2B' },
+  { brand: 'Tesla', name: 'Model 3', type: 'electrico', km: '0 km', fuel: 'Eléctrico', price: '41.990', color: '#46a171' },
+  { brand: 'Toyota', name: 'GR Supra', type: 'deportivo', km: '5.000 km', fuel: 'Gasolina', price: '55.200', color: '#d5803b' },
+  { brand: 'Ford', name: 'Explorer 2024', type: 'suv', km: '0 km', fuel: 'Híbrido', price: '49.900', color: '#7c5cbf' },
+  { brand: 'Volkswagen', name: 'ID.4', type: 'electrico', km: '0 km', fuel: 'Eléctrico', price: '43.590', color: '#2783DE' },
+  { brand: 'Porsche', name: '911 Carrera', type: 'deportivo', km: '3.200 km', fuel: 'Gasolina', price: '118.000', color: '#c0392b' },
+  { brand: 'Nissan', name: 'Qashqai 2024', type: 'suv', km: '0 km', fuel: 'Mild Hybrid', price: '29.990', color: '#16a085' },
+];
+
+const emojis = ['🚗','🚙','🏎','⚡','🚘'];
+function carEmoji(type) {
+  if(type==='electrico') return '⚡';
+  if(type==='deportivo') return '🏎';
+  if(type==='suv') return '🚙';
+  return '🚗';
+}
+
+function renderCars(filter='todos') {
+  const grid = document.getElementById('carsGrid');
+  const filtered = filter==='todos' ? vehicles : vehicles.filter(v=>v.type===filter);
+  grid.innerHTML = filtered.map(v => `
+    <div class="car-card">
+      <div class="car-img">${carEmoji(v.type)}</div>
+      <div class="car-body">
+        <div class="car-brand">${v.brand}</div>
+        <div class="car-name">${v.name}</div>
+        <div class="car-specs">
+          <span class="car-spec">📍 ${v.km}</span>
+          <span class="car-spec">⛽ ${v.fuel}</span>
+        </div>
+        <div class="car-price">${v.price} € <span>PVP</span></div>
+        <div class="car-actions">
+          <a href="#reserva" class="btn-sm btn-sm-primary" onclick="preselect('${v.brand} ${v.name}')">Reservar</a>
+          <button class="btn-sm btn-sm-ghost">Ver más</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterCars(type, el) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderCars(type);
+}
+
+function preselect(name) {
+  setTimeout(()=>{
+    const sel = document.getElementById('rVehiculo');
+    for(let o of sel.options) { if(o.text.includes(name)) { sel.value=o.value; break; }}
+  }, 200);
+}
+
+// ─── EMPLEADOS ───
+const empleados = [
+  { name: 'Antonio Martínez', role: 'Director Comercial', phone: '+34 600 100 001', color: '#2783DE' },
+  { name: 'Laura Sánchez', role: 'Asesora de Ventas', phone: '+34 600 100 002', color: '#46a171' },
+  { name: 'Carlos Rodríguez', role: 'Asesor de Ventas', phone: '+34 600 100 003', color: '#d5803b' },
+  { name: 'María López', role: 'Responsable Financiero', phone: '+34 600 100 004', color: '#7c5cbf' },
+  { name: 'Pedro Jiménez', role: 'Mecánico Jefe', phone: '+34 600 100 005', color: '#e85454' },
+  { name: 'Ana Torres', role: 'Atención al Cliente', phone: '+34 600 100 006', color: '#16a085' },
+  { name: 'Miguel García', role: 'Asesor de Ventas', phone: '+34 600 100 007', color: '#c0392b' },
+  { name: 'Sofía Fernández', role: 'Administración', phone: '+34 600 100 008', color: '#2C2C2B' },
+];
+
+function renderEmpleados() {
+  document.getElementById('empGrid').innerHTML = empleados.map(e => `
+    <div class="emp-card">
+      <div class="emp-avatar" style="background:${e.color}">${e.name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+      <div>
+        <div class="emp-name">${e.name}</div>
+        <div class="emp-role">${e.role}</div>
+        <a class="emp-phone" href="tel:${e.phone.replace(/\s/g,'')}">📞 ${e.phone}</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── NÓMINA ───
+let nominaData = [
+  { nombre:'Antonio Martínez', puesto:'Director Comercial', base:4200, comisiones:800, deducciones:650, estado:'Pagado' },
+  { nombre:'Laura Sánchez', puesto:'Asesora de Ventas', base:2100, comisiones:420, deducciones:320, estado:'Pagado' },
+  { nombre:'Carlos Rodríguez', puesto:'Asesor de Ventas', base:2100, comisiones:350, deducciones:310, estado:'Pendiente' },
+  { nombre:'María López', puesto:'Resp. Financiero', base:3200, comisiones:0, deducciones:480, estado:'Pagado' },
+  { nombre:'Pedro Jiménez', puesto:'Mecánico Jefe', base:2600, comisiones:200, deducciones:380, estado:'Pagado' },
+  { nombre:'Ana Torres', puesto:'Atención al Cliente', base:1900, comisiones:0, deducciones:285, estado:'Pendiente' },
+  { nombre:'Miguel García', puesto:'Asesor de Ventas', base:2100, comisiones:290, deducciones:310, estado:'Pagado' },
+  { nombre:'Sofía Fernández', puesto:'Administración', base:1950, comisiones:0, deducciones:290, estado:'Pagado' },
+];
+
+function fmt(n) { return Number(n).toLocaleString('es-ES',{style:'currency',currency:'EUR'}); }
+
+function neto(row) { return (Number(row.base)||0)+(Number(row.comisiones)||0)-(Number(row.deducciones)||0); }
+
+function badgeEstado(e) {
+  if(e==='Pagado') return '<span class="badge badge-green">Pagado</span>';
+  if(e==='Pendiente') return '<span class="badge badge-orange">Pendiente</span>';
+  return '<span class="badge badge-red">Rechazado</span>';
+}
+
+function renderNomina() {
+  const body = document.getElementById('nominaBody');
+  body.innerHTML = nominaData.map((r,i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td><span class="editable" contenteditable="true" onblur="updateCell(${i},'nombre',this.innerText)">${r.nombre}</span></td>
+      <td><span class="editable" contenteditable="true" onblur="updateCell(${i},'puesto',this.innerText)">${r.puesto}</span></td>
+      <td><span class="editable" contenteditable="true" onblur="updateCell(${i},'base',this.innerText.replace(/[^0-9.-]/g,''))">${r.base}</span> €</td>
+      <td><span class="editable" contenteditable="true" onblur="updateCell(${i},'comisiones',this.innerText.replace(/[^0-9.-]/g,''))">${r.comisiones}</span> €</td>
+      <td><span class="editable" contenteditable="true" onblur="updateCell(${i},'deducciones',this.innerText.replace(/[^0-9.-]/g,''))">${r.deducciones}</span> €</td>
+      <td><strong>${fmt(neto(r))}</strong></td>
+      <td>
+        <select onchange="updateEstado(${i},this.value)" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:0.8rem;">
+          <option ${r.estado==='Pagado'?'selected':''}>Pagado</option>
+          <option ${r.estado==='Pendiente'?'selected':''}>Pendiente</option>
+          <option ${r.estado==='Rechazado'?'selected':''}>Rechazado</option>
+        </select>
+      </td>
+    </tr>
+  `).join('');
+  actualizarTotales();
+  actualizarResumen();
+}
+
+function updateCell(i, field, val) {
+  nominaData[i][field] = field==='base'||field==='comisiones'||field==='deducciones' ? parseFloat(val)||0 : val;
+  actualizarTotales(); actualizarResumen();
+}
+
+function updateEstado(i, val) {
+  nominaData[i].estado = val;
+  actualizarResumen();
+}
+
+function actualizarTotales() {
+  const totBase = nominaData.reduce((a,r)=>a+(Number(r.base)||0),0);
+  const totCom = nominaData.reduce((a,r)=>a+(Number(r.comisiones)||0),0);
+  const totDed = nominaData.reduce((a,r)=>a+(Number(r.deducciones)||0),0);
+  const totNeto = nominaData.reduce((a,r)=>a+neto(r),0);
+  document.getElementById('totBase').innerText = fmt(totBase);
+  document.getElementById('totCom').innerText = fmt(totCom);
+  document.getElementById('totDed').innerText = fmt(totDed);
+  document.getElementById('totNeto').innerText = fmt(totNeto);
+}
+
+function actualizarResumen() {
+  const totalNeto = nominaData.reduce((a,r)=>a+neto(r),0);
+  const pagados = nominaData.filter(r=>r.estado==='Pagado').length;
+  const pendientes = nominaData.filter(r=>r.estado==='Pendiente').length;
+  const masAlto = nominaData.reduce((a,b)=>neto(a)>neto(b)?a:b,nominaData[0]);
+  document.getElementById('nominaSummary').innerHTML = `
+    <div class="sum-card" style="background:#e8f5ee;border-color:#b7dfca;">
+      <div class="sum-label" style="color:var(--green);">Total nómina</div>
+      <div class="sum-val" style="color:var(--green);">${fmt(totalNeto)}</div>
+      <div class="sum-desc" style="color:var(--green);">${document.getElementById('mesSelect').value}</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-label" style="color:var(--text-sec);">Empleados pagados</div>
+      <div class="sum-val">${pagados}/${nominaData.length}</div>
+      <div class="sum-desc" style="color:var(--text-sec);">${pendientes} pendiente${pendientes!==1?'s':''}</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-label" style="color:var(--text-sec);">Nómina más alta</div>
+      <div class="sum-val">${fmt(neto(masAlto))}</div>
+      <div class="sum-desc" style="color:var(--text-sec);">${masAlto?.nombre||'-'}</div>
+    </div>
+  `;
+}
+
+function actualizarNomina() { actualizarTotales(); actualizarResumen(); }
+
+function agregarEmpleadoNomina() {
+  nominaData.push({ nombre:'Nuevo Empleado', puesto:'Puesto', base:1800, comisiones:0, deducciones:270, estado:'Pendiente' });
+  renderNomina();
+}
+
+function exportarCSV() {
+  const mes = document.getElementById('mesSelect').value;
+  const headers = ['#','Empleado','Puesto','Salario Base','Comisiones','Deducciones','Neto','Estado'];
+  const rows = nominaData.map((r,i)=>[i+1,r.nombre,r.puesto,r.base,r.comisiones,r.deducciones,neto(r),r.estado]);
+  const csv = [headers,...rows].map(r=>r.join(';')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Nomina_PDM_${mes.replace(' ','_')}.csv`;
+  a.click();
+}
+
+// ─── RESERVA + DISCORD ───
+async function enviarReserva(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  const data = {
+    nombre: document.getElementById('rNombre').value,
+    apellidos: document.getElementById('rApellidos').value,
+    email: document.getElementById('rEmail').value,
+    telefono: document.getElementById('rTelefono').value,
+    vehiculo: document.getElementById('rVehiculo').value,
+    fecha: document.getElementById('rFecha').value,
+    hora: document.getElementById('rHora').value,
+    comentarios: document.getElementById('rComentarios').value,
+  };
+
+  // Enviar a Discord
+  if(DISCORD_WEBHOOK_URL !== 'TU_WEBHOOK_DE_DISCORD_AQUI') {
+    try {
+      await fetch(DISCORD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: 'PDM Concesionario',
+          avatar_url: 'https://cdn-icons-png.flaticon.com/512/55/55283.png',
+          embeds: [{
+            title: '🚗 Nueva solicitud de reserva',
+            color: 0x2783DE,
+            fields: [
+              { name: '👤 Cliente', value: `${data.nombre} ${data.apellidos}`, inline: true },
+              { name: '📧 Email', value: data.email, inline: true },
+              { name: '📞 Teléfono', value: data.telefono, inline: true },
+              { name: '🚘 Vehículo', value: data.vehiculo, inline: true },
+              { name: '📅 Fecha', value: data.fecha || 'No especificada', inline: true },
+              { name: '🕐 Hora', value: data.hora, inline: true },
+              { name: '💬 Comentarios', value: data.comentarios || 'Sin comentarios', inline: false },
+            ],
+            footer: { text: 'PDM Concesionario · ' + new Date().toLocaleString('es-ES') },
+            thumbnail: { url: 'https://cdn-icons-png.flaticon.com/512/55/55283.png' }
+          }]
+        })
+      });
+    } catch(err) { console.warn('Discord webhook error:', err); }
+  }
+
+  // Mostrar confirmación
+  setTimeout(()=>{
+    btn.textContent = '✅ Solicitud enviada';
+    btn.style.background = 'var(--green)';
+    showToast('✅ Reserva enviada — te contactaremos pronto');
+    document.getElementById('reservaForm').reset();
+    setTimeout(()=>{
+      btn.textContent = 'Enviar solicitud de reserva →';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 3000);
+  }, 800);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(()=>t.style.display='none', 4000);
+}
+
+// ─── NAV ───
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// ─── INIT ───
+renderCars();
+renderEmpleados();
+renderNomina();
+</script>
 </body>
 </html>

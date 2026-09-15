@@ -396,22 +396,20 @@ const vehicles = [
     price: '45.900', 
     color: '#4f9def',
     image: 'https://kappa.lol/DB9n2d' },
-  { brand: 'Audi', name: 'Q5 2024', type: 'suv', km: '0 km', fuel: 'Diésel', price: '52.500', color: '#e85454' },
-  { brand: 'Mercedes-Benz', name: 'C220 2024', type: 'sedan', km: '12.000 km', fuel: 'Diésel', price: '38.750', color: '#2C2C2B' },
-  { brand: 'Tesla', name: 'Model 3', type: 'electrico', km: '0 km', fuel: 'Eléctrico', price: '41.990', color: '#46a171' },
-  { brand: 'Toyota', name: 'GR Supra', type: 'deportivo', km: '5.000 km', fuel: 'Gasolina', price: '55.200', color: '#d5803b' },
-  { brand: 'Ford', name: 'Explorer 2024', type: 'suv', km: '0 km', fuel: 'Híbrido', price: '49.900', color: '#7c5cbf' },
-  { brand: 'Volkswagen', name: 'ID.4', type: 'claseC', km: '0 km', fuel: 'Eléctrico', price: '43.590', color: '#2783DE' },
-  { brand: 'Porsche', name: '911 Carrera', type: 'deportivo', km: '3.200 km', fuel: 'Gasolina', price: '118.000', color: '#c0392b' },
-  { brand: 'Nissan', name: 'Qashqai 2024', type: 'suv', km: '0 km', fuel: 'Mild Hybrid', price: '29.990', color: '#16a085' },
+  { brand: 'Audi', name: 'Q5 2024', type: 'claseD', km: '0 km', fuel: 'Gasolina', price: '52.500', color: '#e85454' },
+  { brand: 'Mercedes-Benz', name: 'C220 2024', type: 'claseC', km: '12.000 km', fuel: 'Gasolina', price: '38.750', color: '#2C2C2B' },
+  { brand: 'Tesla', name: 'Model 3', type: 'claseB', km: '0 km', fuel: 'Gasolina', price: '41.990', color: '#46a171' },
 ];
+
 
 function renderCars(filter='todos') {
   const grid = document.getElementById('carsGrid');
   const filtered = filter==='todos' ? vehicles : vehicles.filter(v=>v.type===filter);
   grid.innerHTML = filtered.map(v => `
     <div class="car-card">
-      <div class="car-img">${carEmoji(v.type)}</div>
+      <div class="car-img">
+        <img src="${v.image}" alt="${v.brand} ${v.name}">
+      </div>
       <div class="car-body">
         <div class="car-brand">${v.brand}</div>
         <div class="car-name">${v.name}</div>

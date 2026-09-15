@@ -1,6 +1,17 @@
+.car-img {
+    width: 100%;
+    height: 220px !important;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .car-img img {
-    width: 90%;
-    height: 90%;
-    object-fit: contain;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
     display: block;
 }

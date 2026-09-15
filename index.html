@@ -406,14 +406,6 @@ const vehicles = [
   { brand: 'Nissan', name: 'Qashqai 2024', type: 'suv', km: '0 km', fuel: 'Mild Hybrid', price: '29.990', color: '#16a085' },
 ];
 
-const emojis = ['🚗','🚙','🏎','⚡','🚘'];
-function carEmoji(type) {
-  if(type==='electrico') return 'pdm-logo.png';
-  if(type==='deportivo') return '🏎';
-  if(type==='suv') return '🚙';
-  return '🚗';
-}
-
 function renderCars(filter='todos') {
   const grid = document.getElementById('carsGrid');
   const filtered = filter==='todos' ? vehicles : vehicles.filter(v=>v.type===filter);

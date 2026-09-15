@@ -20,7 +20,7 @@
       --orange: #D5803B;
       --red: #E56458;
       --radius: 8px;
-      --shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 12px rgba(0,0,0,.06);
+      --shadow: 0 8px 30px rgba(0,0,0,.28);
     }
 
     body {
@@ -37,8 +37,8 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
+      background: rgba(8,10,15,0.88);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -258,88 +258,6 @@
     .btn-sm-primary { background: var(--blue); color: #fff; }
     .btn-sm-ghost { background: var(--surface2); color: var(--text); }
 
-    /* ─── RESERVA ─── */
-    #reserva .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
-    .reserva-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-    .reserva-info p { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 24px; }
-    .info-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px;
-      background: var(--canvas);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 12px;
-    }
-    .info-icon { font-size: 1.4rem; flex-shrink: 0; }
-    .info-text-title { font-weight: 600; font-size: 0.9rem; }
-    .info-text-sub { font-size: 0.8rem; color: var(--text-sec); }
-    .form-card {
-      background: var(--canvas);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px;
-      box-shadow: var(--shadow);
-    }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text);
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      font-size: 0.9rem;
-      font-family: inherit;
-      color: var(--text);
-      background: var(--canvas);
-      transition: border-color .15s;
-      outline: none;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus { border-color: var(--blue); }
-    .form-group textarea { min-height: 90px; resize: vertical; }
-    .form-submit {
-      width: 100%;
-      padding: 14px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius);
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity .15s;
-    }
-    .form-submit:hover { opacity: 0.85; }
-    .form-note { font-size: 0.78rem; color: var(--text-sec); text-align: center; margin-top: 12px; }
-    #toast {
-      display: none;
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      background: #1a1a1a;
-      color: #fff;
-      padding: 14px 24px;
-      border-radius: var(--radius);
-      font-size: 0.9rem;
-      font-weight: 500;
-      z-index: 999;
-      box-shadow: var(--shadow);
-      animation: fadeIn .3s;
-    }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
     /* ─── EMPLEADOS ─── */
     .employees-grid {
       display: grid;
@@ -382,96 +300,6 @@
       text-decoration: none;
     }
     .emp-phone:hover { text-decoration: underline; }
-
-    /* ─── NÓMINA ─── */
-    .nomina-controls {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-    .nomina-controls select {
-      padding: 8px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      font-size: 0.9rem;
-      font-family: inherit;
-      background: var(--canvas);
-      color: var(--text);
-      outline: none;
-    }
-    .nomina-controls select:focus { border-color: var(--blue); }
-    .table-wrap {
-      overflow-x: auto;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-    }
-    .nomina-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      background: var(--canvas);
-    }
-    .nomina-table th {
-      background: var(--surface);
-      padding: 12px 16px;
-      text-align: left;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--text-sec);
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    .nomina-table td {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    .nomina-table tr:last-child td { border-bottom: none; }
-    .nomina-table tr:hover td { background: var(--surface); }
-    .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-    .badge-green { background: #e8f5ee; color: var(--green); }
-    .badge-orange { background: #fdf0e2; color: var(--orange); }
-    .badge-red { background: #fdecea; color: var(--red); }
-    .totals-row td { font-weight: 700; background: var(--surface) !important; }
-    .nomina-summary {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-top: 32px;
-    }
-    .sum-card {
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-    .sum-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-    .sum-val { font-size: 1.6rem; font-weight: 800; }
-    .sum-desc { font-size: 0.8rem; margin-top: 2px; }
-    .add-row-btn {
-      padding: 10px 20px;
-      background: var(--surface2);
-      border: 1.5px dashed var(--border);
-      border-radius: var(--radius);
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      color: var(--text-sec);
-      transition: all .15s;
-    }
-    .add-row-btn:hover { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
-    .editable { outline: none; }
-    .editable:focus { background: var(--blue-soft); border-radius: 4px; }
 
     /* ─── FOOTER ─── */
     footer {
@@ -529,112 +357,12 @@
     <p class="section-desc">Explora nuestra flota completa. Filtra por tipo y encuentra el coche perfecto para ti.</p>
     <div class="vehicles-filter">
       <button class="filter-btn active" onclick="filterCars('todos', this)">Todos</button>
-      <button class="filter-btn" onclick="filterCars('sedan', this)">Sedán</button>
-      <button class="filter-btn" onclick="filterCars('suv', this)">SUV</button>
-      <button class="filter-btn" onclick="filterCars('deportivo', this)">Deportivo</button>
-      <button class="filter-btn" onclick="filterCars('electrico', this)">Eléctrico</button>
+      <button class="filter-btn" onclick="filterCars('claseD', this)">D</button>
+      <button class="filter-btn" onclick="filterCars('claseC', this)">C</button>
+      <button class="filter-btn" onclick="filterCars('claseB', this)">B</button>
     </div>
     <div class="vehicles-grid" id="carsGrid">
       <!-- Cards generated by JS -->
-    </div>
-  </div>
-</section>
-
-<!-- RESERVA -->
-<section id="reserva">
-  <div class="section-inner">
-    <div class="reserva-info">
-      <div class="section-label">Reservas</div>
-      <h2 class="section-title">Solicita tu reserva</h2>
-      <p>Rellena el formulario y te contactaremos en menos de 24 horas para confirmar los detalles de tu reserva.</p>
-      <div class="info-item">
-        <div class="info-icon">📅</div>
-        <div>
-          <div class="info-text-title">Reserva sin compromiso</div>
-          <div class="info-text-sub">Cancela gratis hasta 48h antes</div>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon">⚡</div>
-        <div>
-          <div class="info-text-title">Confirmación inmediata</div>
-          <div class="info-text-sub">Recibirás el aviso por Discord y email</div>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon">🔒</div>
-        <div>
-          <div class="info-text-title">Datos seguros</div>
-          <div class="info-text-sub">Tu información está protegida con nosotros</div>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon">📞</div>
-        <div>
-          <div class="info-text-title">¿Prefieres llamar?</div>
-          <div class="info-text-sub">+34 900 000 000 · Lun-Sáb 9h-20h</div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="form-card">
-        <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:24px;">Formulario de reserva</h3>
-        <form id="reservaForm" onsubmit="enviarReserva(event)">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Nombre *</label>
-              <input type="text" id="rNombre" placeholder="Ej: Carlos García" required />
-            </div>
-            <div class="form-group">
-              <label>Apellidos *</label>
-              <input type="text" id="rApellidos" placeholder="García López" required />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Email *</label>
-              <input type="email" id="rEmail" placeholder="correo@ejemplo.com" required />
-            </div>
-            <div class="form-group">
-              <label>Teléfono *</label>
-              <input type="tel" id="rTelefono" placeholder="+34 600 000 000" required />
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Vehículo de interés *</label>
-            <select id="rVehiculo" required>
-              <option value="">Selecciona un vehículo...</option>
-              <option>BMW Serie 3 2024</option>
-              <option>Audi Q5 2024</option>
-              <option>Mercedes-Benz C220</option>
-              <option>Tesla Model 3</option>
-              <option>Toyota GR Supra</option>
-              <option>Ford Explorer 2024</option>
-              <option>Otro (indicar en comentarios)</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Fecha preferida</label>
-              <input type="date" id="rFecha" />
-            </div>
-            <div class="form-group">
-              <label>Hora preferida</label>
-              <select id="rHora">
-                <option>09:00</option><option>10:00</option><option>11:00</option>
-                <option>12:00</option><option>13:00</option><option>16:00</option>
-                <option>17:00</option><option>18:00</option><option>19:00</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Comentarios adicionales</label>
-            <textarea id="rComentarios" placeholder="Cuéntanos algo más sobre lo que buscas..."></textarea>
-          </div>
-          <button type="submit" class="form-submit" id="submitBtn">Enviar solicitud de reserva →</button>
-          <p class="form-note">Al enviar aceptas nuestra política de privacidad. No compartimos tus datos con terceros.</p>
-        </form>
-      </div>
     </div>
   </div>
 </section>
@@ -650,68 +378,13 @@
     </div>
   </div>
 </section>
-
-<!-- NÓMINA -->
-<section id="nomina">
-  <div class="section-inner">
-    <div class="section-label">Administración</div>
-    <h2 class="section-title">Hoja de nómina</h2>
-    <p class="section-desc">Seguimiento mensual del pago de nóminas de todos los empleados. Edita las celdas directamente.</p>
-    <div class="nomina-controls">
-      <label style="font-weight:600; font-size:0.9rem;">Mes:</label>
-      <select id="mesSelect" onchange="actualizarNomina()">
-        <option>Enero 2025</option><option>Febrero 2025</option><option>Marzo 2025</option>
-        <option>Abril 2025</option><option>Mayo 2025</option><option>Junio 2025</option>
-        <option>Julio 2025</option><option>Agosto 2025</option><option selected>Septiembre 2025</option>
-        <option>Octubre 2025</option><option>Noviembre 2025</option><option>Diciembre 2025</option>
-      </select>
-      <button class="add-row-btn" onclick="agregarEmpleadoNomina()">+ Añadir empleado</button>
-      <button class="add-row-btn" onclick="exportarCSV()">📥 Exportar CSV</button>
-    </div>
-    <div class="table-wrap">
-      <table class="nomina-table" id="nominaTable">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Empleado</th>
-            <th>Puesto</th>
-            <th>Salario base</th>
-            <th>Comisiones</th>
-            <th>Deducciones</th>
-            <th>Neto a pagar</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody id="nominaBody"></tbody>
-        <tfoot>
-          <tr class="totals-row" id="totalsRow">
-            <td colspan="3">TOTALES</td>
-            <td id="totBase">-</td>
-            <td id="totCom">-</td>
-            <td id="totDed">-</td>
-            <td id="totNeto">-</td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-    <div class="nomina-summary" id="nominaSummary"></div>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer>
-  <p style="margin-bottom:8px;"><strong>PDM Concesionario</strong></p>
-  <p>Av. del Automóvil 123 · info@pdmconcesionario.es · +34 900 000 000</p>
-  <p style="margin-top:16px; font-size:0.75rem;">© 2025 PDM Concesionario. Todos los derechos reservados.</p>
+  <p style="margin-bottom:8px;"><strong>PDM</strong></p>
+  <p>Power Street y Adam´s Apple Boulevard</p>
 </footer>
 
-<div id="toast">✅ Reserva enviada correctamente</div>
-
 <script>
-// ─── CONFIG ───
-// ⚠️ Reemplaza esta URL con tu webhook real de Discord
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1549322502545604780/oxJF4uW6Uydh_-wpe3GmmcGJFq-t0GMOVBQZuJMVWvpApOJow4ecrjZzL1JRJr3riJm3';
 
 // ─── DATA ───
 const vehicles = [
@@ -721,14 +394,14 @@ const vehicles = [
   { brand: 'Tesla', name: 'Model 3', type: 'electrico', km: '0 km', fuel: 'Eléctrico', price: '41.990', color: '#46a171' },
   { brand: 'Toyota', name: 'GR Supra', type: 'deportivo', km: '5.000 km', fuel: 'Gasolina', price: '55.200', color: '#d5803b' },
   { brand: 'Ford', name: 'Explorer 2024', type: 'suv', km: '0 km', fuel: 'Híbrido', price: '49.900', color: '#7c5cbf' },
-  { brand: 'Volkswagen', name: 'ID.4', type: 'electrico', km: '0 km', fuel: 'Eléctrico', price: '43.590', color: '#2783DE' },
+  { brand: 'Volkswagen', name: 'ID.4', type: 'claseC', km: '0 km', fuel: 'Eléctrico', price: '43.590', color: '#2783DE' },
   { brand: 'Porsche', name: '911 Carrera', type: 'deportivo', km: '3.200 km', fuel: 'Gasolina', price: '118.000', color: '#c0392b' },
   { brand: 'Nissan', name: 'Qashqai 2024', type: 'suv', km: '0 km', fuel: 'Mild Hybrid', price: '29.990', color: '#16a085' },
 ];
 
 const emojis = ['🚗','🚙','🏎','⚡','🚘'];
 function carEmoji(type) {
-  if(type==='electrico') return '⚡';
+  if(type==='electrico') return 'pdm-logo.png';
   if(type==='deportivo') return '🏎';
   if(type==='suv') return '🚙';
   return '🚗';

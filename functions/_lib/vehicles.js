@@ -27,6 +27,24 @@ export const COMMISSION_BY_CLASS = {
 export const vehicles = [
   /* ================= CLASE A ================= */
   {
+    id: "rt3000",
+    brand: "Dinka",
+    name: "RT3000",
+    type: "claseA",
+    cost: 165000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/rt3000.webp"
+  },
+  {
+    id: "coquetted5",
+    brand: "Invetero",
+    name: "Coquette D5",
+    type: "claseA",
+    cost: 155000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/coquette6.webp"
+  },
+  {
     id: "remus",
     brand: "Annis",
     name: "Remus",
@@ -35,7 +53,42 @@ export const vehicles = [
     stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/remus.webp"
   },
-
+  {
+    id: "remusii",
+    brand: "Annis",
+    name: "Remus II",
+    type: "claseA",
+    cost: 125000,
+    stock: 0,
+    image: ""
+  },
+  {
+    id: "argento7f",
+    brand: "Obey",
+    name: "Argento 7F",
+    type: "claseA",
+    cost: 190000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbargento7f.webp"
+  },
+  {
+    id: "argento7f",
+    brand: "Obey",
+    name: "Argento 7F",
+    type: "claseA",
+    cost: 190000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbargento7f.webp"
+  },
+  {
+    id: "penumbraff",
+    brand: "Maibatsu",
+    name: "Penumbra FF",
+    type: "claseA",
+    cost: 155000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/penumbra2.webp"
+  },
   /* ================= CLASE B ================= */
   {
     id: "komoda",

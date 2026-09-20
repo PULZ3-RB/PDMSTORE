@@ -6,27 +6,6 @@ const RESERVA_API_URL = "/reserva";
 const vehicles = [
 
   {
-    brand: "Albany",
-    name: "Primo",
-    type: "claseC",
-    km: "0 km",
-    fuel: "Gasolina",
-    price: "18,000",
-    color: "#4f9def",
-    image: "https://cdn.prodigyrp.net/vehicles/primo.webp"
-  },
-
-  {
-    brand: "Albany",
-    name: "Washington",
-    type: "claseC",
-    km: "0 km",
-    fuel: "Gasolina",
-    price: "5,760",
-    color: "#4f9def",
-    image: "https://cdn.prodigyrp.net/vehicles/washington.webp"
-  },
-  {
     brand: "Annis",
     name: "Remus",
     type: "claseA",
@@ -37,16 +16,146 @@ const vehicles = [
     image: "https://cdn.prodigyrp.net/vehicles/remus.webp"
   },
   {
+    brand: "Stanley",
+    name: "Tow Truck",
+    type: "claseD",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "6,000",
+    color: "#efbc4f",
+    image: "https://cdn.prodigyrp.net/vehicles/towtruck2.webp"
+  },
+  {
+    brand: "Bravado",
+    name: "Paradise",
+    type: "claseD",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "10,000",
+    color: "#efbc4f",
+    image: "https://cdn.prodigyrp.net/vehicles/paradise.webp"
+  },
+  {
+    brand: "Vapid",
+    name: "Speedo",
+    type: "claseD",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "4,000",
+    color: "#efbc4f",
+    image: "https://cdn.prodigyrp.net/vehicles/speedo.webp"
+  },
+  {
+    brand: "Western",
+    name: "Ratbike",
+    type: "claseD",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "2,000",
+    color: "#efbc4f",
+    image: "https://cdn.prodigyrp.net/vehicles/ratbike.webp"
+  },
+  /*----------------- Clase C ---------------------------------*/
+  {
+    brand: "Mammoth",
+    name: "patriot",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "18,000",
+    color: "#4fa2ef",
+    image: "https://cdn.prodigyrp.net/vehicles/patriot.webp"
+  },
+  {
+    brand: "Vapid",
+    name: "Sandking D155 XL",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "31,500",
+    color: "#4fa2ef",
+    image: "https://cdn.prodigyrp.net/vehicles/onx_sandking3.webp"
+  },
+  {
+    brand: "Albany",
+    name: "Primo",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "18,000",
+    color: "#4fa2ef",
+    image: "https://cdn.prodigyrp.net/vehicles/primo.webp"
+  },
+  {
+    brand: "Albany",
+    name: "Washington",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "5,760",
+    color: "#4fa2ef",
+    image: "https://cdn.prodigyrp.net/vehicles/washington.webp"
+  },
+  {
     brand: "Pfister",
     name: "Comet CL",
     type: "claseC",
     km: "0 km",
     fuel: "Gasolina",
     price: "28,800",
-    color: "#4f9def",
+    color: "#4fa2ef",
     image: "https://cdn.prodigyrp.net/vehicles/gbcometcl.webp"
+  },
+  {
+    brand: "Karin",
+    name: "Asterope",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "18,000",
+    color: "#4fa2ef",
+    image: "https://cdn.prodigyrp.net/vehicles/asterope.webp"
+  },
+  {
+    brand: "Vapid",
+    name: "Sandking D155 SWB",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "30,600",
+    color: "#4fa2ef",
+    image: "https://cdn.prodigyrp.net/vehicles/onx_sandking2.webp"
+  },
+  {
+    brand: "Gallivan",
+    name: "Baller II",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "18,000",
+    color: "#4fa2ef",
+    image: "https://cdn.prodigyrp.net/vehicles/baller2.webp"
+  },
+  {
+    brand: "Vapid",
+    name: "Contender",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "31,600",
+    color: "#4fa2ef",
+    image: "https://cdn.prodigyrp.net/vehicles/contender.webp"
+  },
+  {
+    brand: "Benefactor",
+    name: "Jogger Passenger LWB 4x4",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "34,200",
+    color: "#4fa2ef",
+    image: "https://cdn.prodigyrp.net/vehicles/onx_tfjoggerpl3.webp"
   }
-
 ];
 
 

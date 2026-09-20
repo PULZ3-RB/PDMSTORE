@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de empleado | PDMSTORE</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <header class="panel-nav">
+    <a href="index.html" class="panel-logo"><span>PDM</span>STORE</a>
+    <div class="panel-user">
+      <span id="userName">Cargando...</span>
+      <button id="logoutBtn" class="ghost-btn">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="panel-main">
+    <section class="welcome">
+      <p class="eyebrow">PANEL DE EMPLEADO</p>
+      <h1>Hola, <span id="welcomeName">empleado</span></h1>
+      <p class="muted">Registra tus ventas y consulta tus comisiones acumuladas.</p>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card"><span>Ventas realizadas</span><strong id="salesCount">0</strong></article>
+      <article class="stat-card"><span>Total vendido</span><strong id="soldTotal">$0</strong></article>
+      <article class="stat-card"><span>Comisiones</span><strong id="commissionTotal">$0</strong></article>
+    </section>
+
+    <section class="panel-grid">
+      <article class="panel-card">
+        <div class="card-head">
+          <div>
+            <p class="eyebrow">NUEVA VENTA</p>
+            <h2>Registrar venta</h2>
+          </div>
+        </div>
+
+        <form id="saleForm">
+          <label>Vehículo</label>
+          <select id="saleVehicle" required>
+            <option value="">Selecciona un vehículo</option>
+          </select>
+
+          <div id="vehiclePreview" class="sale-preview">Selecciona un vehículo para ver precio y comisión.</div>
+
+          <label>Cliente</label>
+          <input id="clientName" maxlength="120" placeholder="Nombre del cliente" required>
+
+          <label>Forma de pago</label>
+          <select id="paymentMethod" required>
+            <option value="">Selecciona una opción</option>
+            <option>Efectivo</option>
+            <option>Transferencia</option>
+            <option>Financiación</option>
+            <option>Otro</option>
+          </select>
+
+          <button id="saleBtn" class="primary-btn" type="submit">Registrar venta</button>
+          <p id="saleMessage" class="form-message"></p>
+        </form>
+      </article>
+
+      <article class="panel-card">
+        <div class="card-head">
+          <div>
+            <p class="eyebrow">HISTORIAL</p>
+            <h2>Últimas ventas</h2>
+          </div>
+        </div>
+        <div id="salesList" class="sales-list"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="panel.js"></script>
+</body>
+</html>

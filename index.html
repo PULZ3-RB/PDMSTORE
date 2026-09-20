@@ -3,368 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>PDMSTORE</title>
-  <meta name="description" content="PDMSTORE - Catálogo de vehículos">
-
+  <meta name="description" content="Premium Deluxe Motorsport - Catálogo PDMSTORE">
+  <title>Premium Deluxe Motorsport | PDMSTORE</title>
   <link rel="stylesheet" href="main.css">
 </head>
-
 <body>
-
-  <!-- ================= NAVBAR ================= -->
-
   <header class="navbar">
-    <a href="#inicio" class="logo">
-      <span>PDM</span>STORE
-    </a>
+    <a href="#inicio" class="logo"><span>PDM</span>STORE</a>
 
     <nav id="navLinks">
       <a href="#inicio">Inicio</a>
       <a href="#vehiculos">Vehículos</a>
       <a href="#empleados">Empleados</a>
+      <a href="login.html" class="staff-link">Acceso empleados</a>
     </nav>
 
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <button class="menu-btn" type="button" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
   </header>
 
+  <main>
+    <section id="inicio" class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="eyebrow">LOS SANTOS</p>
+        <h1>Premium Deluxe<br><span>Motorsport</span></h1>
+        <p class="hero-copy">Vehículos premium, unidades inmediatas y pedidos por reserva.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#vehiculos">Ver catálogo</a>
+          <a class="btn btn-outline" href="login.html">Panel de empleados</a>
+        </div>
+      </div>
+    </section>
 
-  <!-- ================= INICIO ================= -->
-
-  <section id="inicio" class="hero">
-
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-
-      <p class="hero-small">
-        PREMIUM DELUXE MOTORSPORT
-      </p>
-
-      <h1>
-        PDM<span>STORE</span>
-      </h1>
-
-      <p class="hero-description">
-        Encuentra tu próximo vehículo.
-      </p>
-
-      <a href="#vehiculos" class="hero-button">
-        VER VEHÍCULOS
-      </a>
-
-    </div>
-
-    <div class="hero-scroll">
-      ↓ Explorar
-    </div>
-
-  </section>
-
-
-  <!-- ================= VEHÍCULOS ================= -->
-
-  <section id="vehiculos" class="section vehicles-section">
-
-    <div class="section-header">
-
-      <div>
-        <p class="section-label">PDMSTORE</p>
-        <h2>Nuestros vehículos</h2>
+    <section id="vehiculos" class="section">
+      <div class="section-head">
+        <div>
+          <p class="section-label">CATÁLOGO</p>
+          <h2>Nuestros vehículos</h2>
+        </div>
+        <p>El precio se calcula automáticamente desde el costo base y la clase del vehículo.</p>
       </div>
 
-      <p class="section-description">
-        Explora nuestro catálogo y encuentra el vehículo que buscas.
-      </p>
-
-    </div>
-
-
-    <!-- FILTROS -->
-
-    <div class="vehicle-controls">
-
-      <div class="filters">
-
-        <button
-          class="filter-btn active"
-          onclick="filterCars('todos', this)">
-          Todos
-        </button>
-
-        <button
-          class="filter-btn"
-          onclick="filterCars('claseA', this)">
-          Clase A
-        </button>
-
-        <button
-          class="filter-btn"
-          onclick="filterCars('claseB', this)">
-          Clase B
-        </button>
-
-        <button
-          class="filter-btn"
-          onclick="filterCars('claseC', this)">
-          Clase C
-        </button>
-
-        <button
-          class="filter-btn"
-          onclick="filterCars('claseD', this)">
-          Clase D
-        </button>
-
-      </div>
-
-      <div class="search-box">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Buscar vehículo..."
-          oninput="searchCars()">
-
-        <span>⌕</span>
-      </div>
-
-    </div>
-
-
-    <!-- GRID -->
-
-    <div id="carsGrid" class="cars-grid"></div>
-
-  </section>
-
-
-  <!-- ================= DETALLE VEHÍCULO ================= -->
-
-  <div id="vehicleModal" class="modal">
-
-    <div class="modal-background" onclick="closeVehicleModal()"></div>
-
-    <div class="vehicle-modal">
-
-      <button
-        class="modal-close"
-        onclick="closeVehicleModal()">
-        ×
-      </button>
-
-      <div id="modalImage" class="modal-image"></div>
-
-      <div class="modal-info">
-
-        <p id="modalBrand" class="modal-brand"></p>
-
-        <h2 id="modalName"></h2>
-
-        <div class="modal-price" id="modalPrice"></div>
-
-        <div class="modal-specs">
-
-          <div>
-            <span>KM</span>
-            <strong id="modalKm"></strong>
-          </div>
-
-          <div>
-            <span>COMBUSTIBLE</span>
-            <strong id="modalFuel"></strong>
-          </div>
-
-          <div>
-            <span>CLASE</span>
-            <strong id="modalClass"></strong>
-          </div>
-
+      <div class="vehicle-toolbar">
+        <div class="filters">
+          <button class="filter-btn active" onclick="filterCars('todos', this)">Todos</button>
+          <button class="filter-btn" onclick="filterCars('claseS', this)">S</button>
+          <button class="filter-btn" onclick="filterCars('claseA', this)">A</button>
+          <button class="filter-btn" onclick="filterCars('claseB', this)">B</button>
+          <button class="filter-btn" onclick="filterCars('claseC', this)">C</button>
+          <button class="filter-btn" onclick="filterCars('claseD', this)">D</button>
         </div>
 
-        <button
-          class="reserve-button"
-          onclick="reserveSelectedVehicle()">
-          RESERVAR VEHÍCULO →
-        </button>
-
+        <label class="search-box">
+          <span>⌕</span>
+          <input id="searchInput" type="search" placeholder="Buscar vehículo..." oninput="searchCars()">
+        </label>
       </div>
 
-    </div>
-
-  </div>
-
-
-  <!-- ================= EMPLEADOS ================= -->
-
-  <section id="empleados" class="section employees-section">
-
-    <div class="section-header centered">
-
-      <p class="section-label">PDMSTORE</p>
-
-      <h2>Nuestro equipo</h2>
-
-      <p class="section-description">
-        Conoce a las personas que forman parte de PDMSTORE.
-      </p>
-
-    </div>
-
-    <div id="empGrid" class="employees-grid"></div>
-
-  </section>
-
-
-  <!-- ================= RESERVA ================= -->
-
-  <section id="reservar" class="reservation-section">
-
-    <div class="reservation-container">
-
-      <div class="reservation-title">
-
-        <p class="section-label">PDMSTORE</p>
-
-        <h2>Reserva tu vehículo</h2>
-
-        <p>
-          Completa tus datos para solicitar una reserva.
-        </p>
-
+      <div id="carsGrid" class="cars-grid">
+        <div class="loading-card">Cargando vehículos...</div>
       </div>
+    </section>
 
+    <section id="empleados" class="section section-muted">
+      <div class="section-head centered">
+        <div>
+          <p class="section-label">EQUIPO PDM</p>
+          <h2>Nuestros empleados</h2>
+          <p>Contacta con un miembro del equipo para recibir atención personalizada.</p>
+        </div>
+      </div>
+      <div id="empGrid" class="employees-grid"></div>
+    </section>
 
-      <div class="reservation-card">
+    <section id="reservar" class="section reservation-section">
+      <div class="reservation-shell">
+        <div class="reservation-info">
+          <p class="section-label">RESERVA</p>
+          <h2>Reserva tu vehículo</h2>
+          <p>Selecciona un vehículo del catálogo y completa tus datos.</p>
 
-        <div id="selectedCarImage" class="selected-car-image">
-          <span>🚘</span>
+          <div class="selected-car">
+            <div id="selectedCarImage" class="selected-car-image"><span>🚘</span></div>
+            <div>
+              <p id="selectedCarBrand" class="selected-brand">PDM</p>
+              <h3 id="selectedCarName">Selecciona un vehículo</h3>
+              <strong id="selectedCarPrice">—</strong>
+              <p id="reservationAvailability" class="selected-availability">—</p>
+            </div>
+          </div>
+
+          <div class="tax-notice">
+            <div class="tax-badge">9.8%</div>
+            <div>
+              <strong>Recuerda el TAX</strong>
+              <p>Al precio del vehículo se le añade un 9.8% de TAX.</p>
+              <div class="tax-grid">
+                <span>Precio <strong id="reservationBasePrice">—</strong></span>
+                <span>TAX <strong id="reservationTax">—</strong></span>
+                <span class="tax-total">Total <strong id="reservationTotal">—</strong></span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="selected-car-info">
-
-          <p id="selectedCarBrand">
-            Selecciona un vehículo
-          </p>
-
-          <h3 id="selectedCarName">
-            —
-          </h3>
-
-          <strong id="selectedCarPrice">
-            —
-          </strong>
-
-        </div>
-
-
-        <form id="reservaForm" onsubmit="enviarReserva(event)">
-
-          <input
-            type="hidden"
-            id="rVehiculo">
-
-          <input
-            type="hidden"
-            id="rPrecio">
-
+        <form id="reservaForm" class="reservation-form" onsubmit="enviarReserva(event)">
+          <input type="hidden" id="rVehiculo">
+          <input type="hidden" id="rPrecio">
 
           <div class="form-group">
-
-            <label for="rNombre">
-              Nombre
-            </label>
-
-            <input
-              type="text"
-              id="rNombre"
-              placeholder="Tu nombre"
-              maxlength="100"
-              required>
-
+            <label for="rNombre">Nombre</label>
+            <input id="rNombre" type="text" maxlength="80" placeholder="Tu nombre" required>
           </div>
-
 
           <div class="form-group">
-
-            <label for="rApellidos">
-              Apellidos
-            </label>
-
-            <input
-              type="text"
-              id="rApellidos"
-              placeholder="Tus apellidos"
-              maxlength="100"
-              required>
-
+            <label for="rApellidos">Apellidos</label>
+            <input id="rApellidos" type="text" maxlength="100" placeholder="Tus apellidos" required>
           </div>
-
 
           <div class="form-group">
-
-            <label for="rTelefono">
-              Teléfono
-            </label>
-
-            <input
-              type="tel"
-              id="rTelefono"
-              placeholder="Tu número"
-              maxlength="30"
-              required>
-
+            <label for="rTelefono">Teléfono</label>
+            <input id="rTelefono" type="tel" maxlength="40" placeholder="Tu número" required>
           </div>
 
-
-          <button
-            type="submit"
-            id="submitBtn"
-            class="submit-button">
-
-            ENVIAR RESERVA →
-
-          </button>
-
+          <button id="submitBtn" class="btn btn-primary submit-btn" type="submit">Enviar reserva →</button>
+          <p class="form-note">La reserva se enviará directamente al canal configurado de Discord.</p>
         </form>
-
       </div>
+    </section>
+  </main>
 
+  <div id="vehicleModal" class="modal" aria-hidden="true">
+    <button class="modal-backdrop" type="button" aria-label="Cerrar" onclick="closeVehicleModal()"></button>
+    <div class="vehicle-modal">
+      <button class="modal-close" type="button" onclick="closeVehicleModal()">×</button>
+      <div id="modalImage" class="modal-image"></div>
+      <div class="modal-info">
+        <p id="modalBrand" class="modal-brand"></p>
+        <h2 id="modalName"></h2>
+        <div id="modalPrice" class="modal-price"></div>
+        <div class="modal-specs">
+          <div><span>CLASE</span><strong id="modalClass"></strong></div>
+          <div><span>DISPONIBILIDAD</span><strong id="modalAvailability"></strong></div>
+          <div><span>TAX 9.8%</span><strong id="modalTax"></strong></div>
+          <div><span>TOTAL</span><strong id="modalTotal"></strong></div>
+        </div>
+        <button class="btn btn-primary full" type="button" onclick="reserveSelectedVehicle()">Reservar vehículo →</button>
+      </div>
     </div>
-
-  </section>
-
-
-  <!-- ================= FOOTER ================= -->
+  </div>
 
   <footer>
-
-    <div class="footer-logo">
-      PDM<span>STORE</span>
-    </div>
-
-    <p>
-      PREMIUM DELUXE MOTORSPORT
-    </p>
-
-    <div class="footer-line"></div>
-
-    <small>
-      © 2026 PDMSTORE. Todos los derechos reservados. Las imagenes mostradas pueden tener variantes o diferencias.
-    </small>
-
+    <div class="footer-logo"><span>PDM</span>STORE</div>
+    <p>Premium Deluxe Motorsport · Los Santos</p>
   </footer>
 
-
-  <!-- TOAST -->
-
-  <div
-    id="toast"
-    class="toast"
-    style="display:none;">
-  </div>
-
-
+  <div id="toast" class="toast"></div>
   <script src="script.js"></script>
-
 </body>
 </html>

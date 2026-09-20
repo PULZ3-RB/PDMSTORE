@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear empleado | PDMSTORE</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body class="auth-page">
+  <a class="back-link" href="index.html">← Volver al catálogo</a>
+
+  <main class="auth-shell">
+    <section class="auth-card">
+      <p class="eyebrow">ADMINISTRACIÓN</p>
+      <h1>Crear cuenta</h1>
+      <p class="muted">Usa la clave ADMIN_SETUP_KEY configurada en Cloudflare.</p>
+
+      <form id="createUserForm">
+        <label>Clave de administración</label>
+        <input id="setupKey" type="password" required>
+
+        <label>Usuario</label>
+        <input id="newUsername" placeholder="nico.blaze" required>
+
+        <label>Nombre visible</label>
+        <input id="displayName" placeholder="Nico Blaze" required>
+
+        <label>Contraseña</label>
+        <input id="newPassword" type="password" minlength="6" required>
+
+        <button id="createBtn" class="primary-btn" type="submit">Crear / actualizar cuenta</button>
+        <p id="createMessage" class="form-message"></p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('createUserForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const btn = document.getElementById('createBtn');
+      const message = document.getElementById('createMessage');
+      btn.disabled = true;
+      btn.textContent = 'Guardando...';
+      message.textContent = '';
+
+      try {
+        const response = await fetch('/api/create-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            setupKey: document.getElementById('setupKey').value,
+            username: document.getElementById('newUsername').value.trim(),
+            displayName: document.getElementById('displayName').value.trim(),
+            password: document.getElementById('newPassword').value
+          })
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.error || 'No se pudo crear la cuenta.');
+        message.textContent = result.message;
+        document.getElementById('newPassword').value = '';
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Crear / actualizar cuenta';
+      }
+    });
+  </script>
+</body>
+</html>

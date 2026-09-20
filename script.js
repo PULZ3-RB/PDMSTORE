@@ -25,6 +25,26 @@ const vehicles = [
     price: "5,760",
     color: "#4f9def",
     image: "https://cdn.prodigyrp.net/vehicles/washington.webp"
+  },
+  {
+    brand: "Annis",
+    name: "Remus",
+    type: "claseA",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "114,000",
+    color: "#4f9def",
+    image: "https://cdn.prodigyrp.net/vehicles/remus.webp"
+  },
+  {
+    brand: "Pfister",
+    name: "Comet CL",
+    type: "claseC",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "28,800",
+    color: "#4f9def",
+    image: "https://cdn.prodigyrp.net/vehicles/gbcometcl.webp"
   }
 
 ];

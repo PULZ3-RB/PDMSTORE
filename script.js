@@ -4,7 +4,7 @@
   2. Copia la URL /exec que te entregue Google.
   3. Pégala aquí.
 */
-const RESERVA_API_URL = "https://script.google.com/macros/s/AKfycbzuVQ-LnXuWC9qo5AMOmmmZhpJHXh9pCPLBxLgWWC-fN1nvNdRE5MSQVTtcsRPsL-RA/exec";
+const RESERVA_API_URL = "https://script.google.com/macros/s/AKfycbwyYFvLgUxSMPDtdwDgMjl5mRvWHl8bwq7mnXs-slrD1_OMKAdSQwJMuXWW3lcli2SM_g/exec";
 
 const vehicles = [
   {
@@ -175,7 +175,7 @@ async function enviarReserva(event) {
   }
 
   if (!RESERVA_API_URL ||
-      RESERVA_API_URL === "PEGA_AQUI_LA_URL_DE_TU_GOOGLE_APPS_SCRIPT") {
+      RESERVA_API_URL === "https://script.google.com/macros/s/AKfycbwyYFvLgUxSMPDtdwDgMjl5mRvWHl8bwq7mnXs-slrD1_OMKAdSQwJMuXWW3lcli2SM_g/exec") {
     showToast("⚠️ Falta configurar la URL de reservas.");
     return;
   }

@@ -89,6 +89,8 @@ CONFIGURAR D1 PARA CUENTAS Y VENTAS
 
 CREAR CUENTAS DE EMPLEADO
 -------------------------
+IMPORTANTE: el endpoint /api/create-user ya está incluido en functions/api/create-user.js.
+
 Después de configurar DB y ADMIN_SETUP_KEY abre:
 
 https://TU-PAGINA.pages.dev/admin.html

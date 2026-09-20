@@ -27,6 +27,24 @@ export const COMMISSION_BY_CLASS = {
 export const vehicles = [
   /* ================= CLASE A ================= */
   {
+    id: "panthere",
+    brand: "Toundra",
+    name: "Panthere",
+    type: "claseA",
+    cost: 170000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/panthere.webp"
+  },
+  {
+    id: "vigerov1",
+    brand: "Toundra",
+    name: "Panthere",
+    type: "claseA",
+    cost: 170000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/panthere.webp"
+  },
+  {
     id: "rt3000",
     brand: "Dinka",
     name: "RT3000",
@@ -90,6 +108,456 @@ export const vehicles = [
     image: "https://cdn.prodigyrp.net/vehicles/penumbra2.webp"
   },
   /* ================= CLASE B ================= */
+   {
+    id: "woodlander",
+    brand: "Karin",
+    name: "Woodlander",
+    type: "claseB",
+    cost: 62500,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/woodlander.webp"
+  },
+  {
+    id: "elegyrh4",
+    brand: "Annis",
+    name: "Elegy RH4",
+    type: "claseB",
+    cost: 48000,
+    stock: 0,
+    image: "https://cdnb.artstation.com/p/assets/images/images/039/467/855/large/oleg-z-rh42.jpg?1626009295"
+  },
+  {
+    id: "mojave",
+    brand: "Karin",
+    name: "Mojave",
+    type: "claseB",
+    cost: 60000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbmojave.webp"
+  },
+  {
+    id: "vagrant",
+    brand: "Maxwell",
+    name: "Vagrant",
+    type: "claseB",
+    cost: 58000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/vagrant.webp"
+  },
+  {
+    id: "kuruma",
+    brand: "Karin",
+    name: "Kuruma",
+    type: "claseB",
+    cost: 47000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/kuruma.webp"
+  },
+  {
+    id: "raptor",
+    brand: "BF",
+    name: "Raptor",
+    type: "claseB",
+    cost: 42000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/raptor.webp"
+  },
+  {
+    id: "uranus",
+    brand: "Vapid",
+    name: "Uranus",
+    type: "claseB",
+    cost: 55000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/uranus.webp"
+  },
+  {
+    id: "comet",
+    brand: "Pfister",
+    name: "Comet",
+    type: "claseB",
+    cost: 56000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/comet2.webp"
+  },
+  {
+    id: "rocoto",
+    brand: "Obey",
+    name: "Rocoto",
+    type: "claseB",
+    cost: 38999,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/rocoto.webp"
+  },
+  {
+    id: "mogul",
+    brand: "Karin",
+    name: "Mogul RS",
+    type: "claseB",
+    cost: 75000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbmogulrs.webp"
+  },
+  {
+    id: "caracara",
+    brand: "Vapid",
+    name: "Caracara",
+    type: "claseB",
+    cost: 70000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/caracara.webp"
+  },
+  {
+    id: "sentinel",
+    brand: "ubermacht",
+    name: "Sentinel",
+    type: "claseB",
+    cost: 50000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/sentinel.webp"
+  },
+  {
+    id: "hardy",
+    brand: "Annis",
+    name: "Hardy",
+    type: "claseB",
+    cost: 48000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/hardy.webp"
+  },
+  {
+    id: "oracle",
+    brand: "Ubermacht",
+    name: "Oracle",
+    type: "claseB",
+    cost: 45000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/oracle.webp"
+  },
+  {
+    id: "alamo",
+    brand: "Declasse",
+    name: "Alamo",
+    type: "claseB",
+    cost: 60000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_tfalamo.webp"
+  },
+  {
+    id: "omnis",
+    brand: "Obey",
+    name: "Omnis",
+    type: "claseB",
+    cost: 45000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/omnis.webp"
+  },
+  {
+    id: "dubsta6x6",
+    brand: "Benefactor",
+    name: "Dubsta 6x6",
+    type: "claseB",
+    cost: 45000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/dubsta3.webp"
+  },
+  {
+    id: "chinquemile",
+    brand: "Lampadati",
+    name: "Cinquemila",
+    type: "claseB",
+    cost: 55000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/cinquemila.webp"
+  },
+  {
+    id: "minimus",
+    brand: "Annis",
+    name: "Minimus",
+    type: "claseB",
+    cost: 49000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/minimus.webp"
+  },
+  {
+    id: "regent",
+    brand: "Brute",
+    name: "Regent",
+    type: "claseB",
+    cost: 60000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_tfregent.webp"
+  },
+  {
+    id: "issimetro",
+    brand: "Weeny",
+    name: "Issi Metro",
+    type: "claseB",
+    cost: 70000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbissimetro.webp"
+  },
+  {
+    id: "desertraid",
+    brand: "Vapid",
+    name: "Desert Raid",
+    type: "claseB",
+    cost: 68000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/trophytruck2.webp"
+  },
+  {
+    id: "sentinelclassic",
+    brand: "Ubermacht",
+    name: "Sentinel Classic",
+    type: "claseB",
+    cost: 65000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/sentinel3.webp"
+  },
+  {
+    id: "impaler",
+    brand: "Declasse",
+    name: "Impaler",
+    type: "claseB",
+    cost: 47500,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/impaler.webp"
+  },
+  {
+    id: "scoutgsx",
+    brand: "Vapid",
+    name: "Scout GSX",
+    type: "claseB",
+    cost: 62000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbscoutgsx.webp"
+  },
+  {
+    id: "dominatorfx",
+    brand: "Vapid",
+    name: "Dominator FX",
+    type: "claseB",
+    cost: 61000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/driftdominator10.webp"
+  },
+  {
+    id: "fr36",
+    brand: "Fathom",
+    name: "FR36",
+    type: "claseB",
+    cost: 65000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/fr36.webp"
+  },
+  {
+    id: "invictus",
+    brand: "Canis",
+    name: "Invictus",
+    type: "claseB",
+    cost: 65000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_invictus.webp"
+  },
+  {
+    id: "tokage",
+    brand: "Dinka",
+    name: "Tokage",
+    type: "claseB",
+    cost: 52000,
+    stock: 0,
+    image: "https://dunb17ur4ymx4.cloudfront.net/wysiwyg/1031918/e6b2651f26e777cc70818931f1e7db132dcac967.jpg"
+  },
+  {
+    id: "terminusoverland",
+    brand: "Canis",
+    name: "Terminus Overland",
+    type: "claseB",
+    cost: 73000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_terminus2.webp"
+  },
+  {
+    id: "torero",
+    brand: "Pegassi",
+    name: "Torero",
+    type: "claseB",
+    cost: 56000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/torero.webp"
+  },
+  {
+    id: "brawler",
+    brand: "Coil",
+    name: "Brawler",
+    type: "claseB",
+    cost: 70000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/brawler.webp"
+  },
+  {
+    id: "turismoclassic",
+    brand: "Grotti",
+    name: "Turismo Classic",
+    type: "claseB",
+    cost: 75000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/turismo2.webp"
+  },
+  {
+    id: "viseris",
+    brand: "lampadati",
+    name: "Viseris",
+    type: "claseB",
+    cost: 69000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/viseris.webp"
+  },
+  {
+    id: "tropos rallye",
+    brand: "lampadati",
+    name: "Tropos Rallye",
+    type: "claseB",
+    cost: 52500,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/tropos.webp"
+  },
+  {
+    id: "hellion",
+    brand: "Annis",
+    name: "Hellion",
+    type: "claseB",
+    cost: 43000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/hellion.webp"
+  },
+  {
+    id: "chavosv6",
+    brand: "Dinka",
+    name: "Chavos V6",
+    type: "claseB",
+    cost: 60000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/chavosv6.webp"
+  },
+  {
+    id: "tamworth",
+    brand: "Weeny",
+    name: "Tamworth",
+    type: "claseB",
+    cost: 45000,
+    stock: 0,
+    image: ""
+  },
+  {
+    id: "dominator645",
+    brand: "Vapid",
+    name: "Dominator 645 Cabrio",
+    type: "claseB",
+    cost: 66000,
+    stock: 0,
+    image: ""
+  },
+  {
+    id: "rebla",
+    brand: "Ubermacht",
+    name: "Rebla",
+    type: "claseB",
+    cost: 70000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/rebla.webp"
+  },
+  {
+    id: "dominatorgtt",
+    brand: "Vapid",
+    name: "Dominator GTT",
+    type: "claseB",
+    cost: 66000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/dominator8.webp"
+  },
+  {
+    id: "hedra",
+    brand: "Vulcar",
+    name: "Hedra",
+    type: "claseB",
+    cost: 62000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbhedra.webp"
+  },
+  {
+    id: "scout2025",
+    brand: "Vapid",
+    name: "Scout 2025",
+    type: "claseB",
+    cost: 62000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_scout25.webp"
+  },
+  {
+    id: "meritppv",
+    brand: "Cheval",
+    name: "merit PPV",
+    type: "claseB",
+    cost: 60000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_merit3.webp"
+  },
+  {
+    id: "sugoi",
+    brand: "Dinka",
+    name: "Sugoi",
+    type: "claseB",
+    cost: 70000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/sugoi.webp"
+  },
+  {
+    id: "kanjojs",
+    brand: "Dinka",
+    name: "Kanjo SJ",
+    type: "claseB",
+    cost: 72000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/kanjosj.webp"
+  },
+  {
+    id: "oraclexsle",
+    brand: "Ubermacht",
+    name: "Oracle XS-LE",
+    type: "claseB",
+    cost: 65000,
+    stock: 0,
+    image: ""
+  },
+  {
+    id: "argento",
+    brand: "Obey",
+    name: "Argento",
+    type: "claseB",
+    cost: 56000,
+    stock: 0,
+    image: ""
+  },
+  {
+    id: "hedra2",
+    brand: "vulcar",
+    name: "Hedra Kombi",
+    type: "claseB",
+    cost: 73000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbhedrakombi.webp"
+  },
+  {
+    id: "previon",
+    brand: "Karin",
+    name: "Previon",
+    type: "claseB",
+    cost: 50000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/previon.webp"
+  },
   {
     id: "briosora",
     brand: "Grotti",

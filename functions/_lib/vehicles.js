@@ -108,7 +108,7 @@ export const vehicles = [
     name: "Washington",
     type: "claseC",
     cost: 3200,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/washington.webp"
   },
   {
@@ -117,7 +117,7 @@ export const vehicles = [
     name: "Comet CL",
     type: "claseC",
     cost: 16000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/gbcometcl.webp"
   },
   {
@@ -126,7 +126,7 @@ export const vehicles = [
     name: "Asterope",
     type: "claseC",
     cost: 10000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/asterope.webp"
   },
   {
@@ -135,7 +135,7 @@ export const vehicles = [
     name: "Sandking D155 SWB",
     type: "claseC",
     cost: 17000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/onx_sandking2.webp"
   },
   {
@@ -144,7 +144,7 @@ export const vehicles = [
     name: "Baller II",
     type: "claseC",
     cost: 10000,
-    stock: 0,
+    stock: 2,
     image: "https://cdn.prodigyrp.net/vehicles/baller2.webp"
   },
   {
@@ -153,7 +153,7 @@ export const vehicles = [
     name: "Contender",
     type: "claseC",
     cost: 17555.56,
-    stock: 0,
+    stock: 2,
     image: "https://cdn.prodigyrp.net/vehicles/contender.webp"
   },
   {
@@ -162,7 +162,7 @@ export const vehicles = [
     name: "Jogger Passenger LWB 4x4",
     type: "claseC",
     cost: 19000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/onx_tfjoggerpl3.webp"
   },
 
@@ -173,7 +173,7 @@ export const vehicles = [
     name: "Tow Truck",
     type: "claseD",
     cost: 3000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/towtruck2.webp"
   },
   {
@@ -182,7 +182,7 @@ export const vehicles = [
     name: "Paradise",
     type: "claseD",
     cost: 5000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/paradise.webp"
   },
   {
@@ -191,7 +191,7 @@ export const vehicles = [
     name: "Speedo",
     type: "claseD",
     cost: 2000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/speedo.webp"
   },
   {
@@ -200,7 +200,7 @@ export const vehicles = [
     name: "Ratbike",
     type: "claseD",
     cost: 1000,
-    stock: 0,
+    stock: 3,
     image: "https://cdn.prodigyrp.net/vehicles/ratbike.webp"
   }
 ];

@@ -4,7 +4,7 @@ const RESERVA_API_URL = "/reserva";
 /* ================= VEHÍCULOS ================= */
 
 const vehicles = [
-
+/*----------------- Clase A ---------------------------------*/
   {
     brand: "Annis",
     name: "Remus",
@@ -12,9 +12,42 @@ const vehicles = [
     km: "0 km",
     fuel: "Gasolina",
     price: "114,000",
-    color: "#4f9def",
+    color: "#4f52ef",
     image: "https://cdn.prodigyrp.net/vehicles/remus.webp"
   },
+
+  /*----------------- Clase B ---------------------------------*/
+  {
+    brand: "Lampadati",
+    name: "Komoda",
+    type: "claseB",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "92,400",
+    color: "#ef4fef",
+    image: "https://cdn.prodigyrp.net/vehicles/komoda.webp"
+  },
+  {
+    brand: "Canis",
+    name: "Terminus",
+    type: "claseB",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "87,500",
+    color: "#ef4fef",
+    image: "https://cdn.prodigyrp.net/vehicles/terminus.webp"
+  },
+  {
+    brand: "Canis",
+    name: "Castigator",
+    type: "claseB",
+    km: "0 km",
+    fuel: "Gasolina",
+    price: "84,000",
+    color: "#ef4fef",
+    image: "https://cdn.prodigyrp.net/vehicles/castigator.webp"
+  },
+  /*----------------- Clase D ---------------------------------*/
   {
     brand: "Stanley",
     name: "Tow Truck",

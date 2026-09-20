@@ -91,6 +91,195 @@ export const vehicles = [
   },
   /* ================= CLASE B ================= */
   {
+    id: "briosora",
+    brand: "Grotti",
+    name: "Brioso R/A",
+    type: "claseB",
+    cost: 67000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/brioso.webp"
+  },
+  {
+    id: "tahomagt",
+    brand: "Declasse",
+    name: "Tahoma GT",
+    type: "claseB",
+    cost: 67000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbtahomagt.webp"
+  },
+  {
+    id: "vivant",
+    brand: "Bordeaux",
+    name: "Vivant",
+    type: "claseB",
+    cost: 57000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbvivant.webp"
+  },
+  {
+    id: "bison35xd",
+    brand: "Bravado",
+    name: "Bison 35 XD",
+    type: "claseB",
+    cost: 72000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_tfbison.webp"
+  },
+  {
+    id: "raidillon",
+    brand: "Toundra",
+    name: "Raidillon",
+    type: "claseB",
+    cost: 67200,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbraidillon.webp"
+  },
+  {
+    id: "190z",
+    brand: "Karin",
+    name: "190z",
+    type: "claseB",
+    cost: 55000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/z190.webp"
+  },
+  {
+    id: "picador",
+    brand: "Cheval",
+    name: "Picador",
+    type: "claseB",
+    cost: 42000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/picador.webp"
+  },
+  {
+    id: "vivanite",
+    brand: "Karin",
+    name: "Vivanite",
+    type: "claseB",
+    cost: 46500,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/vivanite.webp"
+  },
+  {
+    id: "windsordrop",
+    brand: "Enus",
+    name: "Windsor Drop",
+    type: "claseB",
+    cost: 63000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/windsor2.webp"
+  },
+  {
+    id: "issihardtop",
+    brand: "Weeny",
+    name: "Issi Hardtop",
+    type: "claseB",
+    cost: 42000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/issi2.webp"
+  },
+  {
+    id: "irisz",
+    brand: "Bollokan",
+    name: "Iris Z",
+    type: "claseB",
+    cost: 76000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbirisz.webp"
+  },
+  {
+    id: "sentinelxs4",
+    brand: "Ubermacht",
+    name: "Sentinel XS4",
+    type: "claseB",
+    cost: 60000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/sentinel6.webp"
+  },
+  {
+    id: "stratum",
+    brand: "Zirconium",
+    name: "Stratum",
+    type: "claseB",
+    cost: 45000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/stratum.webp"
+  },
+  {
+    id: "sultanclassic",
+    brand: "Karin",
+    name: "Sultan Classic",
+    type: "claseB",
+    cost: 70000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/sultan2.webp"
+  },
+  {
+    id: "everon",
+    brand: "Karin",
+    name: "Everon",
+    type: "claseB",
+    cost: 62000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/everon.webp"
+  },
+  {
+    id: "sandstormd205xl",
+    brand: "Vapid",
+    name: "Sandstorm D205 XL",
+    type: "claseB",
+    cost: 67000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_sandstormxl.webp"
+  },
+  {
+    id: "vorschlaghammer",
+    brand: "Benefactor",
+    name: "Vorschlaghammer",
+    type: "claseB",
+    cost: 70000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/vorschlaghammer.webp"
+  },
+  {
+    id: "buffaloac",
+    brand: "Bravado",
+    name: "Buffalo A/C",
+    type: "claseB",
+    cost: 70000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_buffaloac.webp"
+  },
+  {
+    id: "xls",
+    brand: "Benefactor",
+    name: "XLS",
+    type: "claseB",
+    cost: 55000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/xls.webp"
+  },
+  {
+    id: "guardianswb",
+    brand: "Vapid",
+    name: "Guardian SWB",
+    type: "claseB",
+    cost: 70000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/onx_guardian.webp"
+  },
+  {
+    id: "mochi",
+    brand: "Annis",
+    name: "Mochi",
+    type: "claseB",
+    cost: 47000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbmochi.webp"
+  },
+  {
     id: "komoda",
     brand: "Lampadati",
     name: "Komoda",

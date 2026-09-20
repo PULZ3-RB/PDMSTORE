@@ -3,42 +3,222 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crear empleado | PDMSTORE</title>
+  <title>Administración | PDMSTORE</title>
   <link rel="stylesheet" href="panel.css">
 </head>
 <body class="auth-page">
   <a class="back-link" href="index.html">← Volver al catálogo</a>
 
-  <main class="auth-shell">
-    <section class="auth-card">
-      <p class="eyebrow">ADMINISTRACIÓN</p>
-      <h1>Crear cuenta</h1>
-      <p class="muted">Usa la clave ADMIN_SETUP_KEY configurada en Cloudflare.</p>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div>
+        <p class="eyebrow">PDMSTORE · ADMINISTRACIÓN</p>
+        <h1>Panel administrativo</h1>
+        <p class="muted">Crea empleados, consulta sus ventas y comisiones, envía el resumen a Discord o limpia el historial de ventas.</p>
+      </div>
 
-      <form id="createUserForm">
-        <label>Clave de administración</label>
-        <input id="setupKey" type="password" required>
+      <div class="admin-key-box">
+        <label for="setupKey">Clave de administración</label>
+        <input id="setupKey" type="password" autocomplete="current-password" placeholder="ADMIN_SETUP_KEY">
+        <small>Se usa para autorizar todas las acciones de esta página.</small>
+      </div>
+    </header>
 
-        <label>Usuario</label>
-        <input id="newUsername" placeholder="nico.blaze" required>
+    <div class="admin-grid">
+      <section class="admin-card">
+        <p class="eyebrow">CUENTAS</p>
+        <h2>Crear / actualizar empleado</h2>
 
-        <label>Nombre visible</label>
-        <input id="displayName" placeholder="Nico Blaze" required>
+        <form id="createUserForm">
+          <label>Usuario</label>
+          <input id="newUsername" placeholder="nico.blaze" required>
 
-        <label>Contraseña</label>
-        <input id="newPassword" type="password" minlength="6" required>
+          <label>Nombre visible</label>
+          <input id="displayName" placeholder="Nico Blaze" required>
 
-        <button id="createBtn" class="primary-btn" type="submit">Crear / actualizar cuenta</button>
-        <p id="createMessage" class="form-message"></p>
-      </form>
-    </section>
+          <label>Contraseña</label>
+          <input id="newPassword" type="password" minlength="6" required>
+
+          <button id="createBtn" class="primary-btn" type="submit">Crear / actualizar cuenta</button>
+          <p id="createMessage" class="form-message"></p>
+        </form>
+      </section>
+
+      <section class="admin-card admin-card-wide">
+        <div class="admin-card-head">
+          <div>
+            <p class="eyebrow">VENTAS Y COMISIONES</p>
+            <h2>Resumen de empleados</h2>
+          </div>
+
+          <div class="admin-actions">
+            <button id="refreshSalesBtn" class="ghost-btn" type="button">Actualizar</button>
+            <button id="sendSummaryBtn" class="primary-btn compact-btn" type="button">Enviar a Discord</button>
+          </div>
+        </div>
+
+        <div class="admin-stats">
+          <div class="stat-card">
+            <span>Ventas registradas</span>
+            <strong id="adminSalesCount">—</strong>
+          </div>
+          <div class="stat-card">
+            <span>Total vendido</span>
+            <strong id="adminSoldTotal">—</strong>
+          </div>
+          <div class="stat-card">
+            <span>Comisiones totales</span>
+            <strong id="adminCommissionTotal">—</strong>
+          </div>
+        </div>
+
+        <div class="employee-table-wrap">
+          <table class="employee-table">
+            <thead>
+              <tr>
+                <th>Empleado</th>
+                <th>Usuario</th>
+                <th>Vehículos vendidos</th>
+                <th>Total vendido</th>
+                <th>Comisión</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="employeeSalesBody">
+              <tr>
+                <td colspan="6" class="table-empty">Pulsa “Actualizar” para cargar los empleados.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="danger-zone">
+          <div>
+            <strong>Limpiar todas las ventas</strong>
+            <p>Elimina el historial de ventas y pone las comisiones acumuladas en $0. Las cuentas de empleados no se eliminan.</p>
+          </div>
+          <button id="clearAllBtn" class="danger-btn" type="button">Limpiar todas</button>
+        </div>
+
+        <p id="adminMessage" class="form-message"></p>
+      </section>
+    </div>
   </main>
 
   <script>
+    function getSetupKey() {
+      return document.getElementById('setupKey').value;
+    }
+
+    function money(value) {
+      return `$${Number(value || 0).toLocaleString('en-US')}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    async function adminRequest(action, extra = {}) {
+      const setupKey = getSetupKey();
+      if (!setupKey) throw new Error('Escribe primero la clave de administración.');
+
+      const response = await fetch('/api/admin-sales', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ setupKey, action, ...extra })
+      });
+
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || 'No se pudo completar la acción.');
+      }
+      return result;
+    }
+
+    function renderEmployeeSummary(result) {
+      const totals = result.totals || {};
+      document.getElementById('adminSalesCount').textContent = Number(totals.sales_count || 0).toLocaleString('en-US');
+      document.getElementById('adminSoldTotal').textContent = money(totals.sold_total);
+      document.getElementById('adminCommissionTotal').textContent = money(totals.commission_total);
+
+      const body = document.getElementById('employeeSalesBody');
+      const employees = result.employees || [];
+
+      if (!employees.length) {
+        body.innerHTML = '<tr><td colspan="6" class="table-empty">No hay empleados registrados.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = employees.map(employee => `
+        <tr>
+          <td><strong>${escapeHtml(employee.display_name)}</strong></td>
+          <td>@${escapeHtml(employee.username)}</td>
+          <td>${Number(employee.sales_count || 0).toLocaleString('en-US')}</td>
+          <td>${money(employee.sold_total)}</td>
+          <td class="commission-cell">${money(employee.commission_total)}</td>
+          <td>
+            <button
+              type="button"
+              class="mini-danger-btn"
+              data-user-id="${Number(employee.id)}"
+              data-user-name="${escapeHtml(employee.display_name)}">
+              Limpiar
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll('.mini-danger-btn').forEach(button => {
+        button.addEventListener('click', async () => {
+          const userId = Number(button.dataset.userId);
+          const userName = button.dataset.userName;
+
+          if (!confirm(`¿Seguro que quieres borrar TODAS las ventas de ${userName}?`)) return;
+
+          const message = document.getElementById('adminMessage');
+          button.disabled = true;
+          message.textContent = 'Limpiando ventas...';
+
+          try {
+            const result = await adminRequest('clear-user', { userId });
+            renderEmployeeSummary(result);
+            message.textContent = `${result.message} (${result.deleted} venta(s) eliminada(s)).`;
+          } catch (error) {
+            message.textContent = error.message;
+          } finally {
+            button.disabled = false;
+          }
+        });
+      });
+    }
+
+    async function loadSummary() {
+      const message = document.getElementById('adminMessage');
+      message.textContent = 'Cargando...';
+      try {
+        const result = await adminRequest('load');
+        renderEmployeeSummary(result);
+        message.textContent = '';
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    }
+
     document.getElementById('createUserForm').addEventListener('submit', async (event) => {
       event.preventDefault();
       const btn = document.getElementById('createBtn');
       const message = document.getElementById('createMessage');
+
+      if (!getSetupKey()) {
+        message.textContent = 'Escribe primero la clave de administración.';
+        return;
+      }
+
       btn.disabled = true;
       btn.textContent = 'Guardando...';
       message.textContent = '';
@@ -48,21 +228,66 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            setupKey: document.getElementById('setupKey').value,
+            setupKey: getSetupKey(),
             username: document.getElementById('newUsername').value.trim(),
             displayName: document.getElementById('displayName').value.trim(),
             password: document.getElementById('newPassword').value
           })
         });
+
         const result = await response.json();
         if (!response.ok || !result.ok) throw new Error(result.error || 'No se pudo crear la cuenta.');
+
         message.textContent = result.message;
         document.getElementById('newPassword').value = '';
+        await loadSummary();
       } catch (error) {
         message.textContent = error.message;
       } finally {
         btn.disabled = false;
         btn.textContent = 'Crear / actualizar cuenta';
+      }
+    });
+
+    document.getElementById('refreshSalesBtn').addEventListener('click', loadSummary);
+
+    document.getElementById('sendSummaryBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('sendSummaryBtn');
+      const message = document.getElementById('adminMessage');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+      message.textContent = '';
+
+      try {
+        const result = await adminRequest('send-summary');
+        renderEmployeeSummary(result);
+        message.textContent = result.message;
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enviar a Discord';
+      }
+    });
+
+    document.getElementById('clearAllBtn').addEventListener('click', async () => {
+      if (!confirm('¿Seguro que quieres eliminar TODAS las ventas de TODOS los empleados? Esta acción no elimina las cuentas.')) return;
+
+      const btn = document.getElementById('clearAllBtn');
+      const message = document.getElementById('adminMessage');
+      btn.disabled = true;
+      btn.textContent = 'Limpiando...';
+      message.textContent = '';
+
+      try {
+        const result = await adminRequest('clear-all');
+        renderEmployeeSummary(result);
+        message.textContent = `${result.message} (${result.deleted} venta(s) eliminada(s)).`;
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Limpiar todas';
       }
     });
   </script>

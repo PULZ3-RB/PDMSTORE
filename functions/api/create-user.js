@@ -52,7 +52,12 @@ export async function onRequestPost(context) {
 
     return json({ ok: true, message: `Cuenta ${username} creada/actualizada correctamente.` });
   } catch (error) {
-    console.error(error);
-    return json({ ok: false, error: "No se pudo crear la cuenta." }, 500);
-  }
+
+  console.error("ERROR CREANDO USUARIO:", error);
+
+  return json({
+    ok: false,
+    error: `Error: ${error?.message || String(error)}`
+  }, 500);
+
 }

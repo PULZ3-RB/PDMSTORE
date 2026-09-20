@@ -32,7 +32,7 @@ export const vehicles = [
     name: "Remus",
     type: "claseA",
     cost: 95000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/remus.webp"
   },
 
@@ -61,18 +61,27 @@ export const vehicles = [
     name: "Castigator",
     type: "claseB",
     cost: 60000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/castigator.webp"
   },
 
   /* ================= CLASE C ================= */
+  {
+    id: "fusilade",
+    brand: "Schyster",
+    name: "Fusilade",
+    type: "claseC",
+    cost: 8000,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/fusilade.webp"
+  },
   {
     id: "patriot",
     brand: "Mammoth",
     name: "Patriot",
     type: "claseC",
     cost: 10000,
-    stock: 0,
+    stock: 1,
     image: "https://cdn.prodigyrp.net/vehicles/patriot.webp"
   },
   {
@@ -81,7 +90,7 @@ export const vehicles = [
     name: "Sandking D155 XL",
     type: "claseC",
     cost: 17500,
-    stock: 0,
+    stock: 3,
     image: "https://cdn.prodigyrp.net/vehicles/onx_sandking3.webp"
   },
   {
@@ -90,7 +99,7 @@ export const vehicles = [
     name: "Primo",
     type: "claseC",
     cost: 10000,
-    stock: 0,
+    stock: 2,
     image: "https://cdn.prodigyrp.net/vehicles/primo.webp"
   },
   {

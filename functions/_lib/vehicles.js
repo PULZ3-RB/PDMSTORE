@@ -27,6 +27,24 @@ export const COMMISSION_BY_CLASS = {
 export const vehicles = [
   /* ================= CLASE A ================= */
   {
+    id: "sultanrsx",
+    brand: "Karin",
+    name: "Sultan RSX",
+    type: "claseA",
+    cost: 192500,
+    stock: 0,
+    image: "https://cdn.prodigyrp.net/vehicles/gbsultanrsx.webp"
+  },
+  {
+    id: "romulus",
+    brand: "Annis",
+    name: "Romulus",
+    type: "claseA",
+    cost: 95000,
+    stock: 0,
+    image: ""
+  },
+  {
     id: "panthere",
     brand: "Toundra",
     name: "Panthere",
@@ -37,12 +55,12 @@ export const vehicles = [
   },
   {
     id: "vigerov1",
-    brand: "Toundra",
-    name: "Panthere",
+    brand: "Declasse",
+    name: "Vigero VL1",
     type: "claseA",
-    cost: 170000,
+    cost: 192000,
     stock: 0,
-    image: "https://cdn.prodigyrp.net/vehicles/panthere.webp"
+    image: ""
   },
   {
     id: "rt3000",
@@ -79,15 +97,6 @@ export const vehicles = [
     cost: 125000,
     stock: 0,
     image: ""
-  },
-  {
-    id: "argento7f",
-    brand: "Obey",
-    name: "Argento 7F",
-    type: "claseA",
-    cost: 190000,
-    stock: 0,
-    image: "https://cdn.prodigyrp.net/vehicles/gbargento7f.webp"
   },
   {
     id: "argento7f",

@@ -1,4 +1,10 @@
 const RESERVA_API_URL = "/reserva";
+const MARKUP_BY_CLASS = {
+  claseD: 1.00, // +100%
+  claseC: 0.80, // +80%
+  claseB: 0.40, // +40%
+  claseA: 0.20  // +20%
+};
 
 let vehicles = [];
 let selectedVehicle = null;

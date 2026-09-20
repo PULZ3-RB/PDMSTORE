@@ -4,7 +4,7 @@
   2. Copia la URL /exec que te entregue Google.
   3. Pégala aquí.
 */
-const RESERVA_API_URL = "https://script.google.com/macros/s/AKfycbwyYFvLgUxSMPDtdwDgMjl5mRvWHl8bwq7mnXs-slrD1_OMKAdSQwJMuXWW3lcli2SM_g/exec";
+const RESERVA_API_URL = "/reserva";
 
 const vehicles = [
   {
@@ -174,12 +174,6 @@ async function enviarReserva(event) {
     return;
   }
 
-  if (!RESERVA_API_URL ||
-      RESERVA_API_URL === "https://script.google.com/macros/s/AKfycbwyYFvLgUxSMPDtdwDgMjl5mRvWHl8bwq7mnXs-slrD1_OMKAdSQwJMuXWW3lcli2SM_g/exec") {
-    showToast("⚠️ Falta configurar la URL de reservas.");
-    return;
-  }
-
   const btn = document.getElementById("submitBtn");
 
   const data = {
@@ -199,10 +193,10 @@ async function enviarReserva(event) {
   btn.textContent = "Enviando...";
 
   try {
-    const response = await fetch(RESERVA_API_URL, {
+    const response = await fetch("/reserva", {
       method: "POST",
       headers: {
-        "Content-Type": "text/plain;charset=utf-8"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
     });
@@ -224,9 +218,11 @@ async function enviarReserva(event) {
     }, 2500);
 
   } catch (error) {
-    console.error(error);
+    console.error("Error:", error);
+
     btn.disabled = false;
     btn.textContent = "Enviar reserva →";
+
     showToast("❌ No se pudo enviar la reserva.");
   }
 }

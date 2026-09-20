@@ -17,36 +17,14 @@ const vehicles = [
   },
 
   {
-    brand: "Audi",
-    name: "Q5 2024",
-    type: "claseD",
-    km: "0 km",
-    fuel: "Gasolina",
-    price: "52.500",
-    color: "#e85454",
-    image: ""
-  },
-
-  {
-    brand: "Mercedes-Benz",
-    name: "C220 2024",
+    brand: "Albany",
+    name: "Washington",
     type: "claseC",
-    km: "12.000 km",
-    fuel: "Gasolina",
-    price: "38.750",
-    color: "#2C2C2B",
-    image: ""
-  },
-
-  {
-    brand: "Tesla",
-    name: "Model 3",
-    type: "claseB",
     km: "0 km",
-    fuel: "Eléctrico",
-    price: "41.990",
-    color: "#46a171",
-    image: ""
+    fuel: "Gasolina",
+    price: "5,760",
+    color: "#4f9def",
+    image: "https://cdn.prodigyrp.net/vehicles/washington.webp"
   }
 
 ];

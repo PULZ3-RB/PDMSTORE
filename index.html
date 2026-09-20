@@ -3,108 +3,368 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDM Concesionario</title>
+
+  <title>PDMSTORE</title>
+  <meta name="description" content="PDMSTORE - Catálogo de vehículos">
+
   <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
 
-<nav>
-  <div class="logo">PDM</div>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#inicio">Inicio</a></li>
-    <li><a href="#vehiculos">Vehículos</a></li>
-    <li><a href="#empleados">Empleados</a></li>
-    <li><a class="nav-cta" href="#reservar">Reservar</a></li>
-  </ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
+  <!-- ================= NAVBAR ================= -->
 
-<section id="inicio" class="hero">
-  <div class="hero-badge">🏆 Concesionario Oficial PDM</div>
-  <h1 class="hero-title">Tu próximo vehículo<br>te está <em>esperando</em></h1>
-  <p class="hero-sub">Los mejores coches, las mejores condiciones. Reserva hoy y vive la experiencia PDM.</p>
-  <div class="hero-btns">
-    <a href="#vehiculos" class="btn btn-primary">Ver vehículos</a>
-    <a href="#reservar" class="btn btn-outline">Reservar</a>
-  </div>
-</section>
+  <header class="navbar">
+    <a href="#inicio" class="logo">
+      <span>PDM</span>STORE
+    </a>
 
-<section id="vehiculos">
-  <div class="section-inner">
-    <div class="section-label">Catálogo</div>
-    <h2 class="section-title">Listado de vehículos</h2>
-    <p class="section-desc">Explora nuestra flota completa. Filtra por tipo y encuentra el coche perfecto para ti.</p>
+    <nav id="navLinks">
+      <a href="#inicio">Inicio</a>
+      <a href="#vehiculos">Vehículos</a>
+      <a href="#empleados">Empleados</a>
+    </nav>
 
-    <div class="vehicles-filter">
-      <button class="filter-btn active" onclick="filterCars('todos', this)">Todos</button>
-      <button class="filter-btn" onclick="filterCars('claseD', this)">D</button>
-      <button class="filter-btn" onclick="filterCars('claseC', this)">C</button>
-      <button class="filter-btn" onclick="filterCars('claseB', this)">B</button>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+
+  <!-- ================= INICIO ================= -->
+
+  <section id="inicio" class="hero">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+      <p class="hero-small">
+        PREMIUM DELUXE MOTORSPORT
+      </p>
+
+      <h1>
+        PDM<span>STORE</span>
+      </h1>
+
+      <p class="hero-description">
+        Encuentra tu próximo vehículo.
+      </p>
+
+      <a href="#vehiculos" class="hero-button">
+        VER VEHÍCULOS
+      </a>
+
     </div>
 
-    <div class="vehicles-grid" id="carsGrid"></div>
-  </div>
-</section>
+    <div class="hero-scroll">
+      ↓ Explorar
+    </div>
 
-<section id="empleados">
-  <div class="section-inner">
-    <div class="section-label">Equipo</div>
-    <h2 class="section-title">Nuestros empleados</h2>
-    <p class="section-desc">Contacta directamente con nuestro equipo.</p>
-    <div class="employees-grid" id="empGrid"></div>
-  </div>
-</section>
+  </section>
 
-<section id="reservar">
-  <div class="section-inner reservation-layout">
-    <div>
-      <div class="section-label">Reserva</div>
-      <h2 class="section-title">Reserva tu vehículo</h2>
-      <p class="section-desc">Selecciona un vehículo desde el catálogo y completa tus datos.</p>
 
-      <div class="selected-car" id="selectedCar">
-        <div class="selected-car-image" id="selectedCarImage">
-          <span>🚘</span>
-        </div>
-        <div class="selected-car-info">
-          <div class="car-brand" id="selectedCarBrand">PDM</div>
-          <div class="selected-car-name" id="selectedCarName">Selecciona un vehículo</div>
-          <div class="selected-car-price" id="selectedCarPrice">—</div>
-        </div>
+  <!-- ================= VEHÍCULOS ================= -->
+
+  <section id="vehiculos" class="section vehicles-section">
+
+    <div class="section-header">
+
+      <div>
+        <p class="section-label">PDMSTORE</p>
+        <h2>Nuestros vehículos</h2>
       </div>
+
+      <p class="section-description">
+        Explora nuestro catálogo y encuentra el vehículo que buscas.
+      </p>
+
     </div>
 
-    <form id="reservaForm" class="reservation-form" onsubmit="enviarReserva(event)">
-      <input type="hidden" id="rVehiculo" name="vehiculo">
-      <input type="hidden" id="rPrecio" name="precio">
 
-      <label for="rNombre">Nombre</label>
-      <input id="rNombre" name="nombre" type="text" placeholder="Tu nombre" required maxlength="60">
+    <!-- FILTROS -->
 
-      <label for="rApellidos">Apellido</label>
-      <input id="rApellidos" name="apellidos" type="text" placeholder="Tu apellido" required maxlength="80">
+    <div class="vehicle-controls">
 
-      <label for="rTelefono">Teléfono</label>
-      <input id="rTelefono" name="telefono" type="tel" placeholder="Tu número de teléfono" required maxlength="30">
+      <div class="filters">
 
-      <button id="submitBtn" class="btn btn-primary submit-btn" type="submit">
-        Enviar reserva →
+        <button
+          class="filter-btn active"
+          onclick="filterCars('todos', this)">
+          Todos
+        </button>
+
+        <button
+          class="filter-btn"
+          onclick="filterCars('claseA', this)">
+          Clase A
+        </button>
+
+        <button
+          class="filter-btn"
+          onclick="filterCars('claseB', this)">
+          Clase B
+        </button>
+
+        <button
+          class="filter-btn"
+          onclick="filterCars('claseC', this)">
+          Clase C
+        </button>
+
+        <button
+          class="filter-btn"
+          onclick="filterCars('claseD', this)">
+          Clase D
+        </button>
+
+      </div>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Buscar vehículo..."
+          oninput="searchCars()">
+
+        <span>⌕</span>
+      </div>
+
+    </div>
+
+
+    <!-- GRID -->
+
+    <div id="carsGrid" class="cars-grid"></div>
+
+  </section>
+
+
+  <!-- ================= DETALLE VEHÍCULO ================= -->
+
+  <div id="vehicleModal" class="modal">
+
+    <div class="modal-background" onclick="closeVehicleModal()"></div>
+
+    <div class="vehicle-modal">
+
+      <button
+        class="modal-close"
+        onclick="closeVehicleModal()">
+        ×
       </button>
 
-      <p class="form-note">Al enviar, la solicitud será recibida por PDM.</p>
-    </form>
+      <div id="modalImage" class="modal-image"></div>
+
+      <div class="modal-info">
+
+        <p id="modalBrand" class="modal-brand"></p>
+
+        <h2 id="modalName"></h2>
+
+        <div class="modal-price" id="modalPrice"></div>
+
+        <div class="modal-specs">
+
+          <div>
+            <span>KM</span>
+            <strong id="modalKm"></strong>
+          </div>
+
+          <div>
+            <span>COMBUSTIBLE</span>
+            <strong id="modalFuel"></strong>
+          </div>
+
+          <div>
+            <span>CLASE</span>
+            <strong id="modalClass"></strong>
+          </div>
+
+        </div>
+
+        <button
+          class="reserve-button"
+          onclick="reserveSelectedVehicle()">
+          RESERVAR VEHÍCULO →
+        </button>
+
+      </div>
+
+    </div>
+
   </div>
-</section>
 
-<footer>
-  <p><strong>PDM</strong></p>
-  <p>Power Street y Adam´s Apple Boulevard</p>
-</footer>
 
-<div id="toast" class="toast"></div>
+  <!-- ================= EMPLEADOS ================= -->
 
-<script src="script.js"></script>
+  <section id="empleados" class="section employees-section">
+
+    <div class="section-header centered">
+
+      <p class="section-label">PDMSTORE</p>
+
+      <h2>Nuestro equipo</h2>
+
+      <p class="section-description">
+        Conoce a las personas que forman parte de PDMSTORE.
+      </p>
+
+    </div>
+
+    <div id="empGrid" class="employees-grid"></div>
+
+  </section>
+
+
+  <!-- ================= RESERVA ================= -->
+
+  <section id="reservar" class="reservation-section">
+
+    <div class="reservation-container">
+
+      <div class="reservation-title">
+
+        <p class="section-label">PDMSTORE</p>
+
+        <h2>Reserva tu vehículo</h2>
+
+        <p>
+          Completa tus datos para solicitar una reserva.
+        </p>
+
+      </div>
+
+
+      <div class="reservation-card">
+
+        <div id="selectedCarImage" class="selected-car-image">
+          <span>🚘</span>
+        </div>
+
+        <div class="selected-car-info">
+
+          <p id="selectedCarBrand">
+            Selecciona un vehículo
+          </p>
+
+          <h3 id="selectedCarName">
+            —
+          </h3>
+
+          <strong id="selectedCarPrice">
+            —
+          </strong>
+
+        </div>
+
+
+        <form id="reservaForm" onsubmit="enviarReserva(event)">
+
+          <input
+            type="hidden"
+            id="rVehiculo">
+
+          <input
+            type="hidden"
+            id="rPrecio">
+
+
+          <div class="form-group">
+
+            <label for="rNombre">
+              Nombre
+            </label>
+
+            <input
+              type="text"
+              id="rNombre"
+              placeholder="Tu nombre"
+              maxlength="100"
+              required>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="rApellidos">
+              Apellidos
+            </label>
+
+            <input
+              type="text"
+              id="rApellidos"
+              placeholder="Tus apellidos"
+              maxlength="100"
+              required>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="rTelefono">
+              Teléfono
+            </label>
+
+            <input
+              type="tel"
+              id="rTelefono"
+              placeholder="Tu número"
+              maxlength="30"
+              required>
+
+          </div>
+
+
+          <button
+            type="submit"
+            id="submitBtn"
+            class="submit-button">
+
+            ENVIAR RESERVA →
+
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+
+    <div class="footer-logo">
+      PDM<span>STORE</span>
+    </div>
+
+    <p>
+      PREMIUM DELUXE MOTORSPORT
+    </p>
+
+    <div class="footer-line"></div>
+
+    <small>
+      © 2026 PDMSTORE. Todos los derechos reservados.
+    </small>
+
+  </footer>
+
+
+  <!-- TOAST -->
+
+  <div
+    id="toast"
+    class="toast"
+    style="display:none;">
+  </div>
+
+
+  <script src="script.js"></script>
+
 </body>
 </html>

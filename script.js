@@ -6,14 +6,14 @@ const RESERVA_API_URL = "/reserva";
 const vehicles = [
 
   {
-    brand: "BMW",
-    name: "Serie 3 2024",
-    type: "claseD",
+    brand: "Albany",
+    name: "Primo",
+    type: "claseC",
     km: "0 km",
     fuel: "Gasolina",
-    price: "45.900",
+    price: "18,000",
     color: "#4f9def",
-    image: "https://kappa.lol/DB9n2d"
+    image: "https://cdn.prodigyrp.net/vehicles/primo.webp"
   },
 
   {
@@ -61,53 +61,16 @@ let currentFilter = "todos";
 const empleados = [
 
   {
-    name: "Antonio Martínez",
-    phone: "+34 600 100 001",
+    name: "Raven",
+    phone: "605-042-3584",
     color: "#2783DE"
   },
 
   {
-    name: "Laura Sánchez",
-    phone: "+34 600 100 002",
+    name: "Nico Blaze",
+    phone: "354-800-5830",
     color: "#46A171"
-  },
-
-  {
-    name: "Carlos Rodríguez",
-    phone: "+34 600 100 003",
-    color: "#D5803B"
-  },
-
-  {
-    name: "María López",
-    phone: "+34 600 100 004",
-    color: "#7C5CBF"
-  },
-
-  {
-    name: "Pedro Jiménez",
-    phone: "+34 600 100 005",
-    color: "#E56458"
-  },
-
-  {
-    name: "Ana Torres",
-    phone: "+34 600 100 006",
-    color: "#16A085"
-  },
-
-  {
-    name: "Miguel García",
-    phone: "+34 600 100 007",
-    color: "#C0392B"
-  },
-
-  {
-    name: "Sofía Fernández",
-    phone: "+34 600 100 008",
-    color: "#2C2C2B"
   }
-
 ];
 
 

@@ -165,7 +165,7 @@ function renderCars(filter = currentFilter) {
 
         <div class="car-price">
           $${escapeHtml(vehicle.price)}
-          <span>PVP</span>
+          <span>+ tax 9.8%</span>
         </div>
 
 

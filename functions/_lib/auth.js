@@ -2,7 +2,7 @@ import { parseCookies } from "./http.js";
 
 const COOKIE_NAME = "pdm_session";
 const SESSION_DAYS = 7;
-const PBKDF2_ITERATIONS = 120000;
+const PBKDF2_ITERATIONS = 100000;
 
 function bytesToBase64(bytes) {
   let binary = "";

@@ -14,13 +14,15 @@
       <div>
         <p class="eyebrow">PDMSTORE · ADMINISTRACIÓN</p>
         <h1>Panel administrativo</h1>
-        <p class="muted">Crea empleados, consulta sus ventas y comisiones, envía el resumen a Discord o limpia el historial de ventas.</p>
+        <p class="muted">
+          Gestiona empleados, vehículos, stock, ventas y comisiones desde una sola página.
+        </p>
       </div>
 
       <div class="admin-key-box">
         <label for="setupKey">Clave de administración</label>
         <input id="setupKey" type="password" autocomplete="current-password" placeholder="ADMIN_SETUP_KEY">
-        <small>Se usa para autorizar todas las acciones de esta página.</small>
+        <small>Se usa para autorizar todas las acciones administrativas.</small>
       </div>
     </header>
 
@@ -39,12 +41,115 @@
           <label>Contraseña</label>
           <input id="newPassword" type="password" minlength="6" required>
 
-          <button id="createBtn" class="primary-btn" type="submit">Crear / actualizar cuenta</button>
+          <button id="createBtn" class="primary-btn" type="submit">
+            Crear / actualizar cuenta
+          </button>
+
           <p id="createMessage" class="form-message"></p>
         </form>
       </section>
 
       <section class="admin-card admin-card-wide">
+        <div class="admin-card-head">
+          <div>
+            <p class="eyebrow">VEHÍCULOS</p>
+            <h2>Agregar / editar vehículo</h2>
+          </div>
+
+          <div class="admin-actions">
+            <button id="refreshVehiclesBtn" class="ghost-btn" type="button">
+              Cargar vehículos
+            </button>
+          </div>
+        </div>
+
+        <form id="vehicleForm">
+          <input id="editingVehicleId" type="hidden">
+
+          <div class="vehicle-form-grid">
+            <div>
+              <label>Marca</label>
+              <input id="vehicleBrand" placeholder="Annis" required>
+            </div>
+
+            <div>
+              <label>Modelo</label>
+              <input id="vehicleName" placeholder="Remus" required>
+            </div>
+
+            <div>
+              <label>Clase</label>
+              <select id="vehicleType" required>
+                <option value="claseS">Clase S</option>
+                <option value="claseA">Clase A</option>
+                <option value="claseB">Clase B</option>
+                <option value="claseC">Clase C</option>
+                <option value="claseD">Clase D</option>
+              </select>
+            </div>
+
+            <div>
+              <label>Costo base</label>
+              <input id="vehicleCost" type="number" min="0" step="0.01" placeholder="95000" required>
+            </div>
+
+            <div>
+              <label>Stock</label>
+              <input id="vehicleStock" type="number" min="0" step="1" value="0" required>
+            </div>
+
+            <div class="vehicle-image-field">
+              <label>URL de imagen</label>
+              <input id="vehicleImage" type="url" placeholder="https://...">
+            </div>
+          </div>
+
+          <div id="vehiclePricePreview" class="vehicle-price-preview">
+            Completa clase y costo para ver el precio calculado.
+          </div>
+
+          <div class="vehicle-form-actions">
+            <button id="saveVehicleBtn" class="primary-btn compact-btn" type="submit">
+              Agregar vehículo
+            </button>
+
+            <button id="cancelEditVehicleBtn" class="ghost-btn" type="button" hidden>
+              Cancelar edición
+            </button>
+          </div>
+
+          <p id="vehicleMessage" class="form-message"></p>
+        </form>
+
+        <div class="vehicle-admin-toolbar">
+          <input id="vehicleAdminSearch" placeholder="Buscar por marca, modelo o ID...">
+        </div>
+
+        <div class="employee-table-wrap">
+          <table class="employee-table vehicle-admin-table">
+            <thead>
+              <tr>
+                <th>Vehículo</th>
+                <th>Clase</th>
+                <th>Costo</th>
+                <th>Venta</th>
+                <th>Stock</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="vehicleAdminBody">
+              <tr>
+                <td colspan="7" class="table-empty">
+                  Escribe tu clave de administración y pulsa “Cargar vehículos”.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-card admin-card-wide admin-sales-section">
         <div class="admin-card-head">
           <div>
             <p class="eyebrow">VENTAS Y COMISIONES</p>
@@ -62,10 +167,12 @@
             <span>Ventas registradas</span>
             <strong id="adminSalesCount">—</strong>
           </div>
+
           <div class="stat-card">
             <span>Total vendido</span>
             <strong id="adminSoldTotal">—</strong>
           </div>
+
           <div class="stat-card">
             <span>Comisiones totales</span>
             <strong id="adminCommissionTotal">—</strong>
@@ -86,7 +193,9 @@
             </thead>
             <tbody id="employeeSalesBody">
               <tr>
-                <td colspan="6" class="table-empty">Pulsa “Actualizar” para cargar los empleados.</td>
+                <td colspan="6" class="table-empty">
+                  Pulsa “Actualizar” para cargar los empleados.
+                </td>
               </tr>
             </tbody>
           </table>
@@ -95,9 +204,15 @@
         <div class="danger-zone">
           <div>
             <strong>Limpiar todas las ventas</strong>
-            <p>Elimina el historial de ventas y pone las comisiones acumuladas en $0. Las cuentas de empleados no se eliminan.</p>
+            <p>
+              Elimina el historial de ventas y pone las comisiones acumuladas en $0.
+              Las cuentas de empleados no se eliminan.
+            </p>
           </div>
-          <button id="clearAllBtn" class="danger-btn" type="button">Limpiar todas</button>
+
+          <button id="clearAllBtn" class="danger-btn" type="button">
+            Limpiar todas
+          </button>
         </div>
 
         <p id="adminMessage" class="form-message"></p>
@@ -106,12 +221,26 @@
   </main>
 
   <script>
+    const MARKUP_BY_CLASS = {
+      claseD: 1.00,
+      claseC: 0.80,
+      claseB: 0.40,
+      claseA: 0.20,
+      claseS: 0.00
+    };
+
+    const TAX_RATE = 0.098;
+
+    let adminVehicles = [];
+
     function getSetupKey() {
       return document.getElementById('setupKey').value;
     }
 
     function money(value) {
-      return `$${Number(value || 0).toLocaleString('en-US')}`;
+      return `$${Number(value || 0).toLocaleString('en-US', {
+        maximumFractionDigits: 2
+      })}`;
     }
 
     function escapeHtml(value) {
@@ -123,26 +252,195 @@
         .replaceAll("'", '&#039;');
     }
 
-    async function adminRequest(action, extra = {}) {
-      const setupKey = getSetupKey();
-      if (!setupKey) throw new Error('Escribe primero la clave de administración.');
+    function className(type) {
+      return ({
+        claseS: 'Clase S',
+        claseA: 'Clase A',
+        claseB: 'Clase B',
+        claseC: 'Clase C',
+        claseD: 'Clase D'
+      })[type] || type;
+    }
 
-      const response = await fetch('/api/admin-sales', {
+    async function adminRequest(endpoint, action, extra = {}) {
+      const setupKey = getSetupKey();
+
+      if (!setupKey) {
+        throw new Error('Escribe primero la clave de administración.');
+      }
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ setupKey, action, ...extra })
+        body: JSON.stringify({
+          setupKey,
+          action,
+          ...extra
+        })
       });
 
       const result = await response.json();
+
       if (!response.ok || !result.ok) {
         throw new Error(result.error || 'No se pudo completar la acción.');
       }
+
       return result;
+    }
+
+    function renderVehiclePreview() {
+      const type = document.getElementById('vehicleType').value;
+      const cost = Number(document.getElementById('vehicleCost').value || 0);
+      const stock = Number(document.getElementById('vehicleStock').value || 0);
+      const markup = MARKUP_BY_CLASS[type] ?? 0;
+      const price = Math.round(cost * (1 + markup));
+      const tax = Math.round(price * TAX_RATE);
+      const total = price + tax;
+      const availability = stock > 0
+        ? `Unidad inmediata · ${stock} disponible${stock === 1 ? '' : 's'}`
+        : 'Solo por reserva';
+
+      document.getElementById('vehiclePricePreview').innerHTML = `
+        <span>Costo <strong>${money(cost)}</strong></span>
+        <span>${className(type)} <strong>+${(markup * 100).toFixed(0)}%</strong></span>
+        <span>Venta <strong>${money(price)}</strong></span>
+        <span>TAX 9.8% <strong>${money(tax)}</strong></span>
+        <span>Total <strong>${money(total)}</strong></span>
+        <span>Estado <strong>${escapeHtml(availability)}</strong></span>
+      `;
+    }
+
+    function resetVehicleForm() {
+      document.getElementById('vehicleForm').reset();
+      document.getElementById('editingVehicleId').value = '';
+      document.getElementById('vehicleType').value = 'claseA';
+      document.getElementById('vehicleStock').value = '0';
+      document.getElementById('saveVehicleBtn').textContent = 'Agregar vehículo';
+      document.getElementById('cancelEditVehicleBtn').hidden = true;
+      renderVehiclePreview();
+    }
+
+    function editVehicle(id) {
+      const vehicle = adminVehicles.find(v => v.id === id);
+      if (!vehicle) return;
+
+      document.getElementById('editingVehicleId').value = vehicle.id;
+      document.getElementById('vehicleBrand').value = vehicle.brand;
+      document.getElementById('vehicleName').value = vehicle.name;
+      document.getElementById('vehicleType').value = vehicle.type;
+      document.getElementById('vehicleCost').value = vehicle.cost;
+      document.getElementById('vehicleStock').value = vehicle.stock;
+      document.getElementById('vehicleImage').value = vehicle.image || '';
+      document.getElementById('saveVehicleBtn').textContent = 'Guardar cambios';
+      document.getElementById('cancelEditVehicleBtn').hidden = false;
+      renderVehiclePreview();
+      document.getElementById('vehicleForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function renderAdminVehicles() {
+      const query = document.getElementById('vehicleAdminSearch').value.toLowerCase().trim();
+      const body = document.getElementById('vehicleAdminBody');
+
+      const filtered = adminVehicles.filter(v => {
+        if (!query) return true;
+        return `${v.id} ${v.brand} ${v.name} ${v.className}`.toLowerCase().includes(query);
+      });
+
+      if (!filtered.length) {
+        body.innerHTML = '<tr><td colspan="7" class="table-empty">No se encontraron vehículos.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = filtered.map(vehicle => `
+        <tr class="${Number(vehicle.active) === 1 ? '' : 'vehicle-disabled-row'}">
+          <td>
+            <strong>${escapeHtml(vehicle.brand)} ${escapeHtml(vehicle.name)}</strong>
+            <div class="vehicle-id-text">${escapeHtml(vehicle.id)}</div>
+          </td>
+          <td>${escapeHtml(vehicle.className)}</td>
+          <td>${money(vehicle.cost)}</td>
+          <td>${money(vehicle.price)}</td>
+          <td>${Number(vehicle.stock || 0).toLocaleString('en-US')}</td>
+          <td>
+            <span class="admin-status ${Number(vehicle.active) === 1 ? 'status-active' : 'status-inactive'}">
+              ${Number(vehicle.active) === 1 ? 'Activo' : 'Desactivado'}
+            </span>
+          </td>
+          <td>
+            <div class="row-actions">
+              <button
+                class="ghost-btn mini-btn edit-vehicle-btn"
+                type="button"
+                data-id="${escapeHtml(vehicle.id)}">
+                Editar
+              </button>
+
+              <button
+                class="${Number(vehicle.active) === 1 ? 'mini-danger-btn' : 'mini-enable-btn'} toggle-vehicle-btn"
+                type="button"
+                data-id="${escapeHtml(vehicle.id)}"
+                data-active="${Number(vehicle.active) === 1 ? '0' : '1'}">
+                ${Number(vehicle.active) === 1 ? 'Desactivar' : 'Activar'}
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll('.edit-vehicle-btn').forEach(button => {
+        button.addEventListener('click', () => editVehicle(button.dataset.id));
+      });
+
+      document.querySelectorAll('.toggle-vehicle-btn').forEach(button => {
+        button.addEventListener('click', async () => {
+          const id = button.dataset.id;
+          const active = Number(button.dataset.active);
+          const vehicle = adminVehicles.find(v => v.id === id);
+
+          if (!vehicle) return;
+
+          const text = active === 1 ? 'activar' : 'desactivar';
+
+          if (!confirm(`¿Quieres ${text} ${vehicle.brand} ${vehicle.name}?`)) return;
+
+          const message = document.getElementById('vehicleMessage');
+          button.disabled = true;
+          message.textContent = `${text === 'activar' ? 'Activando' : 'Desactivando'} vehículo...`;
+
+          try {
+            const result = await adminRequest('/api/admin-vehicles', 'set-active', {
+              id,
+              active
+            });
+
+            adminVehicles = result.vehicles || [];
+            renderAdminVehicles();
+            message.textContent = result.message;
+          } catch (error) {
+            message.textContent = error.message;
+          }
+        });
+      });
+    }
+
+    async function loadAdminVehicles() {
+      const message = document.getElementById('vehicleMessage');
+      message.textContent = 'Cargando vehículos...';
+
+      try {
+        const result = await adminRequest('/api/admin-vehicles', 'list');
+        adminVehicles = result.vehicles || [];
+        renderAdminVehicles();
+        message.textContent = `${adminVehicles.length} vehículo(s) cargado(s).`;
+      } catch (error) {
+        message.textContent = error.message;
+      }
     }
 
     function renderEmployeeSummary(result) {
       const totals = result.totals || {};
-      document.getElementById('adminSalesCount').textContent = Number(totals.sales_count || 0).toLocaleString('en-US');
+      document.getElementById('adminSalesCount').textContent =
+        Number(totals.sales_count || 0).toLocaleString('en-US');
       document.getElementById('adminSoldTotal').textContent = money(totals.sold_total);
       document.getElementById('adminCommissionTotal').textContent = money(totals.commission_total);
 
@@ -164,7 +462,7 @@
           <td>
             <button
               type="button"
-              class="mini-danger-btn"
+              class="mini-danger-btn clear-user-sales-btn"
               data-user-id="${Number(employee.id)}"
               data-user-name="${escapeHtml(employee.display_name)}">
               Limpiar
@@ -173,7 +471,7 @@
         </tr>
       `).join('');
 
-      document.querySelectorAll('.mini-danger-btn').forEach(button => {
+      document.querySelectorAll('.clear-user-sales-btn').forEach(button => {
         button.addEventListener('click', async () => {
           const userId = Number(button.dataset.userId);
           const userName = button.dataset.userName;
@@ -185,7 +483,7 @@
           message.textContent = 'Limpiando ventas...';
 
           try {
-            const result = await adminRequest('clear-user', { userId });
+            const result = await adminRequest('/api/admin-sales', 'clear-user', { userId });
             renderEmployeeSummary(result);
             message.textContent = `${result.message} (${result.deleted} venta(s) eliminada(s)).`;
           } catch (error) {
@@ -200,8 +498,9 @@
     async function loadSummary() {
       const message = document.getElementById('adminMessage');
       message.textContent = 'Cargando...';
+
       try {
-        const result = await adminRequest('load');
+        const result = await adminRequest('/api/admin-sales', 'load');
         renderEmployeeSummary(result);
         message.textContent = '';
       } catch (error) {
@@ -209,8 +508,60 @@
       }
     }
 
-    document.getElementById('createUserForm').addEventListener('submit', async (event) => {
+    document.getElementById('vehicleType').addEventListener('change', renderVehiclePreview);
+    document.getElementById('vehicleCost').addEventListener('input', renderVehiclePreview);
+    document.getElementById('vehicleStock').addEventListener('input', renderVehiclePreview);
+    document.getElementById('vehicleAdminSearch').addEventListener('input', renderAdminVehicles);
+
+    document.getElementById('refreshVehiclesBtn').addEventListener('click', loadAdminVehicles);
+    document.getElementById('cancelEditVehicleBtn').addEventListener('click', resetVehicleForm);
+
+    document.getElementById('vehicleForm').addEventListener('submit', async event => {
       event.preventDefault();
+
+      const btn = document.getElementById('saveVehicleBtn');
+      const message = document.getElementById('vehicleMessage');
+      const editingId = document.getElementById('editingVehicleId').value;
+
+      btn.disabled = true;
+      btn.textContent = editingId ? 'Guardando...' : 'Agregando...';
+      message.textContent = '';
+
+      try {
+        const payload = {
+          brand: document.getElementById('vehicleBrand').value.trim(),
+          name: document.getElementById('vehicleName').value.trim(),
+          type: document.getElementById('vehicleType').value,
+          cost: Number(document.getElementById('vehicleCost').value),
+          stock: Number(document.getElementById('vehicleStock').value),
+          image: document.getElementById('vehicleImage').value.trim()
+        };
+
+        if (editingId) payload.id = editingId;
+
+        const result = await adminRequest(
+          '/api/admin-vehicles',
+          editingId ? 'update' : 'create',
+          payload
+        );
+
+        adminVehicles = result.vehicles || [];
+        renderAdminVehicles();
+        message.textContent = result.message;
+        resetVehicleForm();
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = document.getElementById('editingVehicleId').value
+          ? 'Guardar cambios'
+          : 'Agregar vehículo';
+      }
+    });
+
+    document.getElementById('createUserForm').addEventListener('submit', async event => {
+      event.preventDefault();
+
       const btn = document.getElementById('createBtn');
       const message = document.getElementById('createMessage');
 
@@ -236,7 +587,10 @@
         });
 
         const result = await response.json();
-        if (!response.ok || !result.ok) throw new Error(result.error || 'No se pudo crear la cuenta.');
+
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || 'No se pudo crear la cuenta.');
+        }
 
         message.textContent = result.message;
         document.getElementById('newPassword').value = '';
@@ -254,12 +608,13 @@
     document.getElementById('sendSummaryBtn').addEventListener('click', async () => {
       const btn = document.getElementById('sendSummaryBtn');
       const message = document.getElementById('adminMessage');
+
       btn.disabled = true;
       btn.textContent = 'Enviando...';
       message.textContent = '';
 
       try {
-        const result = await adminRequest('send-summary');
+        const result = await adminRequest('/api/admin-sales', 'send-summary');
         renderEmployeeSummary(result);
         message.textContent = result.message;
       } catch (error) {
@@ -271,16 +626,19 @@
     });
 
     document.getElementById('clearAllBtn').addEventListener('click', async () => {
-      if (!confirm('¿Seguro que quieres eliminar TODAS las ventas de TODOS los empleados? Esta acción no elimina las cuentas.')) return;
+      if (!confirm(
+        '¿Seguro que quieres eliminar TODAS las ventas de TODOS los empleados? Esta acción no elimina las cuentas.'
+      )) return;
 
       const btn = document.getElementById('clearAllBtn');
       const message = document.getElementById('adminMessage');
+
       btn.disabled = true;
       btn.textContent = 'Limpiando...';
       message.textContent = '';
 
       try {
-        const result = await adminRequest('clear-all');
+        const result = await adminRequest('/api/admin-sales', 'clear-all');
         renderEmployeeSummary(result);
         message.textContent = `${result.message} (${result.deleted} venta(s) eliminada(s)).`;
       } catch (error) {
@@ -290,6 +648,8 @@
         btn.textContent = 'Limpiar todas';
       }
     });
+
+    renderVehiclePreview();
   </script>
 </body>
 </html>

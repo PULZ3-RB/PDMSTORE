@@ -11,9 +11,16 @@ import {
 } from "../_lib/vehicles.js";
 
 async function requireUser(context) {
-  if (!context.env.DB) return { error: json({ ok: false, error: "D1 no está conectado." }, 500) };
+  if (!context.env.DB) {
+    return { error: json({ ok: false, error: "D1 no está conectado." }, 500) };
+  }
+
   const user = await getCurrentUser(context.request, context.env.DB);
-  if (!user) return { error: json({ ok: false, error: "No autorizado." }, 401) };
+
+  if (!user) {
+    return { error: json({ ok: false, error: "No autorizado." }, 401) };
+  }
+
   return { user };
 }
 
@@ -39,9 +46,13 @@ export async function onRequestGet(context) {
       WHERE user_id = ?
     `).bind(auth.user.id).first();
 
-    return json({ ok: true, sales: salesResult.results || [], summary });
+    return json({
+      ok: true,
+      sales: salesResult.results || [],
+      summary
+    });
   } catch (error) {
-    console.error(error);
+    console.error("SALES GET ERROR:", error);
     return json({ ok: false, error: "No se pudo cargar el historial." }, 500);
   }
 }
@@ -52,7 +63,7 @@ export async function onRequestPost(context) {
     if (auth.error) return auth.error;
 
     const body = await context.request.json();
-    const vehicleId = cleanText(body.vehicleId, 80);
+    const vehicleId = cleanText(body.vehicleId, 100);
     const clientName = cleanText(body.clientName, 120);
     const paymentMethod = cleanText(body.paymentMethod, 60);
 
@@ -60,8 +71,11 @@ export async function onRequestPost(context) {
       return json({ ok: false, error: "Completa todos los datos de la venta." }, 400);
     }
 
-    const vehicle = getVehicleById(vehicleId);
-    if (!vehicle) return json({ ok: false, error: "Vehículo no válido." }, 400);
+    const vehicle = await getVehicleById(context.env.DB, vehicleId);
+
+    if (!vehicle) {
+      return json({ ok: false, error: "Vehículo no válido o desactivado." }, 400);
+    }
 
     const basePrice = calculateSalePrice(vehicle.cost, vehicle.type);
     const tax = calculateTax(basePrice);
@@ -77,11 +91,21 @@ export async function onRequestPost(context) {
         base_price, tax, total, commission_rate, commission_amount
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
-      auth.user.id, vehicle.id, vehicleName, vehicleClass, clientName, paymentMethod,
-      basePrice, tax, total, commissionRate, commissionAmount
+      auth.user.id,
+      vehicle.id,
+      vehicleName,
+      vehicleClass,
+      clientName,
+      paymentMethod,
+      basePrice,
+      tax,
+      total,
+      commissionRate,
+      commissionAmount
     ).run();
 
     let discordSent = false;
+
     if (context.env.DISCORD_SALES_WEBHOOK_URL) {
       const payload = {
         username: "PDMSTORE Ventas",
@@ -109,8 +133,12 @@ export async function onRequestPost(context) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
+
       discordSent = discord.ok;
-      if (!discord.ok) console.error("Discord ventas:", await discord.text());
+
+      if (!discord.ok) {
+        console.error("Discord ventas:", await discord.text());
+      }
     }
 
     return json({
@@ -125,7 +153,7 @@ export async function onRequestPost(context) {
       discordSent
     });
   } catch (error) {
-    console.error(error);
+    console.error("SALES POST ERROR:", error);
     return json({ ok: false, error: "No se pudo registrar la venta." }, 500);
   }
 }

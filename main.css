@@ -52,7 +52,7 @@ button { color: inherit; }
   display: flex;
   align-items: center;
   padding: 120px clamp(22px, 7vw, 110px) 70px;
-  background-image: url("images/hero.png");
+  background-image: url("https://media.discordapp.net/attachments/1548748140327215134/1551731143001243668/hero.png?ex=6ab309be&is=6ab1b83e&hm=d5cad41c854a17a80411e286cf912a263cfb5854d18fc0348c1704c97554c7e6&=&format=webp&quality=lossless&width=1872&height=702");
   background-size: cover;
   background-position: center;
 }

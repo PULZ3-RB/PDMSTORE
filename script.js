@@ -6,7 +6,8 @@ let currentFilter = "todos";
 
 const empleados = [
   { name: "Raven", phone: "605-042-3584", color: "#2783DE" },
-  { name: "Nico Blaze", phone: "354-800-5830", color: "#46A171" }
+  { name: "Nico Blaze", phone: "354-800-5830", color: "#46A171" },
+  { name: "Emmett Hobbs", phone: "265-348-1214", color: "#46A171" }
 ];
 
 function formatMoney(value) {

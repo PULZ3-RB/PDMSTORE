@@ -3,6 +3,7 @@ const RESERVA_API_URL = "/reserva";
 let vehicles = [];
 let selectedVehicle = null;
 let currentFilter = "todos";
+let currentCategory = "auto";
 
 const empleados = [
   { name: "Raven", phone: "605-042-3584", color: "#2783DE" },
@@ -19,6 +20,10 @@ function availabilityText(vehicle) {
   return stock > 0
     ? `Unidad inmediata · ${stock} disponible${stock === 1 ? "" : "s"}`
     : "Solo por reserva";
+}
+
+function categoryIcon(vehicle) {
+  return vehicle.category === "moto" ? "🏍️" : "🚘";
 }
 
 function escapeHtml(value) {
@@ -62,14 +67,27 @@ function renderCars(filter = currentFilter) {
 
   const search = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
 
-  let filtered = [...vehicles];
-  if (filter !== "todos") filtered = filtered.filter(v => v.type === filter);
+  let filtered = vehicles.filter(vehicle => (vehicle.category || "auto") === currentCategory);
+
+  if (filter !== "todos") {
+    filtered = filtered.filter(vehicle => vehicle.type === filter);
+  }
+
   if (search) {
-    filtered = filtered.filter(v => `${v.brand} ${v.name} ${v.className}`.toLowerCase().includes(search));
+    filtered = filtered.filter(vehicle =>
+      `${vehicle.brand} ${vehicle.name} ${vehicle.className} ${vehicle.categoryName || ""}`
+        .toLowerCase()
+        .includes(search)
+    );
+  }
+
+  const catalogTitle = document.getElementById("catalogTypeTitle");
+  if (catalogTitle) {
+    catalogTitle.textContent = currentCategory === "moto" ? "Motos" : "Autos";
   }
 
   if (!filtered.length) {
-    grid.innerHTML = `<div class="no-results">No se encontraron vehículos.</div>`;
+    grid.innerHTML = `<div class="no-results">No se encontraron ${currentCategory === "moto" ? "motos" : "autos"} con estos filtros.</div>`;
     return;
   }
 
@@ -78,20 +96,37 @@ function renderCars(filter = currentFilter) {
       ? `<span class="availability available">● UNIDAD INMEDIATA · ${vehicle.stock} disponible${vehicle.stock === 1 ? "" : "s"}</span>`
       : `<span class="availability reservation">◷ SOLO POR RESERVA</span>`;
 
+    const icon = categoryIcon(vehicle);
+
     return `
       <article class="car-card">
         <div class="car-img">
           ${vehicle.image
             ? `<img src="${vehicle.image}" alt="${escapeHtml(vehicle.brand + " " + vehicle.name)}">`
-            : `<span style="font-size:4rem;opacity:.3">🚘</span>`}
+            : `<span style="font-size:4rem;opacity:.3">${icon}</span>`}
         </div>
 
         <div class="car-body">
           <div class="car-brand">${escapeHtml(vehicle.brand)}</div>
           <div class="car-name">${escapeHtml(vehicle.name)}</div>
-          <div class="car-specs"><span class="car-spec">🚘 ${escapeHtml(vehicle.className)}</span></div>
+
+          <div class="car-specs">
+            <span class="car-spec">${icon} ${escapeHtml(vehicle.categoryName || (vehicle.category === "moto" ? "Moto" : "Auto"))}</span>
+            <span class="car-spec">🏷️ ${escapeHtml(vehicle.className)}</span>
+          </div>
+
           <div class="car-availability">${availability}</div>
-          <div class="car-price">$${formatMoney(vehicle.price)}<span>+ TAX 9.8%</span></div>
+
+          <div class="car-price-grid">
+            <div class="car-price-block">
+              <span>Precio</span>
+              <strong>$${formatMoney(vehicle.price)}</strong>
+            </div>
+            <div class="car-price-block total-price-block">
+              <span>Con TAX 9.8%</span>
+              <strong>$${formatMoney(vehicle.total)}</strong>
+            </div>
+          </div>
 
           <div class="car-actions">
             <button class="btn-sm btn-sm-primary" onclick="openVehicleModal('${escapeJs(vehicle.id)}')">VER VEHÍCULO</button>
@@ -107,6 +142,19 @@ function filterCars(type, element) {
   document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
   element?.classList.add("active");
   renderCars(type);
+}
+
+function setCatalogCategory(category, element) {
+  currentCategory = category === "moto" ? "moto" : "auto";
+  currentFilter = "todos";
+
+  document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
+  element?.classList.add("active");
+
+  document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelector('.filter-btn[data-filter="todos"]')?.classList.add("active");
+
+  renderCars("todos");
 }
 
 function searchCars() {
@@ -125,7 +173,7 @@ function openVehicleModal(id) {
   document.getElementById("modalBrand").textContent = vehicle.brand;
   document.getElementById("modalName").textContent = vehicle.name;
   document.getElementById("modalPrice").textContent = `$${formatMoney(vehicle.price)}`;
-  document.getElementById("modalClass").textContent = vehicle.className;
+  document.getElementById("modalClass").textContent = `${vehicle.categoryName || (vehicle.category === "moto" ? "Moto" : "Auto")} · ${vehicle.className}`;
   document.getElementById("modalAvailability").textContent = availabilityText(vehicle);
   document.getElementById("modalTax").textContent = `$${formatMoney(vehicle.tax)}`;
   document.getElementById("modalTotal").textContent = `$${formatMoney(vehicle.total)}`;
@@ -133,7 +181,7 @@ function openVehicleModal(id) {
   const imageBox = document.getElementById("modalImage");
   imageBox.innerHTML = vehicle.image
     ? `<img src="${vehicle.image}" alt="${escapeHtml(vehicle.brand + " " + vehicle.name)}">`
-    : `<span style="font-size:6rem;opacity:.25">🚘</span>`;
+    : `<span style="font-size:6rem;opacity:.25">${categoryIcon(vehicle)}</span>`;
 
   document.getElementById("vehicleModal").classList.add("show");
   document.body.style.overflow = "hidden";
@@ -160,7 +208,7 @@ function preselect(id) {
   document.getElementById("rPrecio").value = vehicle.price;
   document.getElementById("selectedCarBrand").textContent = vehicle.brand;
   document.getElementById("selectedCarName").textContent = vehicle.name;
-  document.getElementById("selectedCarPrice").textContent = `$${formatMoney(vehicle.price)}`;
+  document.getElementById("selectedCarPrice").textContent = `$${formatMoney(vehicle.price)} · Total $${formatMoney(vehicle.total)}`;
   document.getElementById("reservationAvailability").textContent = availabilityText(vehicle);
   document.getElementById("reservationBasePrice").textContent = `$${formatMoney(vehicle.price)}`;
   document.getElementById("reservationTax").textContent = `$${formatMoney(vehicle.tax)}`;
@@ -169,7 +217,7 @@ function preselect(id) {
   const imageBox = document.getElementById("selectedCarImage");
   imageBox.innerHTML = vehicle.image
     ? `<img src="${vehicle.image}" alt="${escapeHtml(vehicle.brand + " " + vehicle.name)}">`
-    : `<span>🚘</span>`;
+    : `<span>${categoryIcon(vehicle)}</span>`;
 
   document.getElementById("reservar")?.scrollIntoView({ behavior: "smooth" });
 }

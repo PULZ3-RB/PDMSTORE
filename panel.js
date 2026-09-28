@@ -36,7 +36,7 @@ async function loadVehicles() {
   vehicles = result.vehicles || [];
   const select = document.getElementById("saleVehicle");
   select.innerHTML = `<option value="">Selecciona un vehículo</option>` + vehicles.map(v =>
-    `<option value="${v.id}">${v.brand} ${v.name} · ${v.className}</option>`
+    `<option value="${v.id}">${v.categoryName || (v.category === "moto" ? "Moto" : "Auto")} · ${v.brand} ${v.name} · ${v.className}</option>`
   ).join("");
 }
 
@@ -54,7 +54,7 @@ function renderPreview() {
   const commission = Math.round(vehicle.price * rate);
   box.innerHTML = `
     <strong>${vehicle.brand} ${vehicle.name}</strong><br>
-    ${vehicle.className} · Precio ${money(vehicle.price)} · TAX ${money(vehicle.tax)} · Total ${money(vehicle.total)}<br>
+    ${vehicle.categoryName || (vehicle.category === "moto" ? "Moto" : "Auto")} · ${vehicle.className} · Precio ${money(vehicle.price)} · TAX ${money(vehicle.tax)} · Total ${money(vehicle.total)}<br>
     Comisión: ${(rate * 100).toFixed(0)}% = <strong>${money(commission)}</strong>
   `;
 }

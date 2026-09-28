@@ -78,6 +78,14 @@
             </div>
 
             <div>
+              <label>Catálogo</label>
+              <select id="vehicleCategory" required>
+                <option value="auto">🚘 Auto</option>
+                <option value="moto">🏍️ Moto</option>
+              </select>
+            </div>
+
+            <div>
               <label>Clase</label>
               <select id="vehicleType" required>
                 <option value="claseS">Clase S</option>
@@ -130,6 +138,7 @@
             <thead>
               <tr>
                 <th>Vehículo</th>
+                <th>Catálogo</th>
                 <th>Clase</th>
                 <th>Costo</th>
                 <th>Venta</th>
@@ -140,7 +149,7 @@
             </thead>
             <tbody id="vehicleAdminBody">
               <tr>
-                <td colspan="7" class="table-empty">
+                <td colspan="8" class="table-empty">
                   Escribe tu clave de administración y pulsa “Cargar vehículos”.
                 </td>
               </tr>
@@ -289,6 +298,7 @@
     }
 
     function renderVehiclePreview() {
+      const category = document.getElementById('vehicleCategory').value;
       const type = document.getElementById('vehicleType').value;
       const cost = Number(document.getElementById('vehicleCost').value || 0);
       const stock = Number(document.getElementById('vehicleStock').value || 0);
@@ -301,6 +311,7 @@
         : 'Solo por reserva';
 
       document.getElementById('vehiclePricePreview').innerHTML = `
+        <span>Catálogo <strong>${category === 'moto' ? '🏍️ Moto' : '🚘 Auto'}</strong></span>
         <span>Costo <strong>${money(cost)}</strong></span>
         <span>${className(type)} <strong>+${(markup * 100).toFixed(0)}%</strong></span>
         <span>Venta <strong>${money(price)}</strong></span>
@@ -313,6 +324,7 @@
     function resetVehicleForm() {
       document.getElementById('vehicleForm').reset();
       document.getElementById('editingVehicleId').value = '';
+      document.getElementById('vehicleCategory').value = 'auto';
       document.getElementById('vehicleType').value = 'claseA';
       document.getElementById('vehicleStock').value = '0';
       document.getElementById('saveVehicleBtn').textContent = 'Agregar vehículo';
@@ -327,6 +339,7 @@
       document.getElementById('editingVehicleId').value = vehicle.id;
       document.getElementById('vehicleBrand').value = vehicle.brand;
       document.getElementById('vehicleName').value = vehicle.name;
+      document.getElementById('vehicleCategory').value = vehicle.category || 'auto';
       document.getElementById('vehicleType').value = vehicle.type;
       document.getElementById('vehicleCost').value = vehicle.cost;
       document.getElementById('vehicleStock').value = vehicle.stock;
@@ -343,11 +356,11 @@
 
       const filtered = adminVehicles.filter(v => {
         if (!query) return true;
-        return `${v.id} ${v.brand} ${v.name} ${v.className}`.toLowerCase().includes(query);
+        return `${v.id} ${v.brand} ${v.name} ${v.className} ${v.categoryName || ''}`.toLowerCase().includes(query);
       });
 
       if (!filtered.length) {
-        body.innerHTML = '<tr><td colspan="7" class="table-empty">No se encontraron vehículos.</td></tr>';
+        body.innerHTML = '<tr><td colspan="8" class="table-empty">No se encontraron vehículos.</td></tr>';
         return;
       }
 
@@ -357,6 +370,7 @@
             <strong>${escapeHtml(vehicle.brand)} ${escapeHtml(vehicle.name)}</strong>
             <div class="vehicle-id-text">${escapeHtml(vehicle.id)}</div>
           </td>
+          <td>${vehicle.category === 'moto' ? '🏍️ Moto' : '🚘 Auto'}</td>
           <td>${escapeHtml(vehicle.className)}</td>
           <td>${money(vehicle.cost)}</td>
           <td>${money(vehicle.price)}</td>
@@ -508,6 +522,7 @@
       }
     }
 
+    document.getElementById('vehicleCategory').addEventListener('change', renderVehiclePreview);
     document.getElementById('vehicleType').addEventListener('change', renderVehiclePreview);
     document.getElementById('vehicleCost').addEventListener('input', renderVehiclePreview);
     document.getElementById('vehicleStock').addEventListener('input', renderVehiclePreview);
@@ -531,6 +546,7 @@
         const payload = {
           brand: document.getElementById('vehicleBrand').value.trim(),
           name: document.getElementById('vehicleName').value.trim(),
+          category: document.getElementById('vehicleCategory').value,
           type: document.getElementById('vehicleType').value,
           cost: Number(document.getElementById('vehicleCost').value),
           stock: Number(document.getElementById('vehicleStock').value),

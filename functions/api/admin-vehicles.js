@@ -2,6 +2,7 @@ import { json, cleanText } from "../_lib/http.js";
 import { timingSafeEqual } from "../_lib/auth.js";
 import {
   VALID_VEHICLE_TYPES,
+  VALID_VEHICLE_CATEGORIES,
   listVehicles,
   getAdminVehicle
 } from "../_lib/vehicles.js";
@@ -25,6 +26,18 @@ async function requireAdmin(context, body) {
   }
 
   return { ok: true };
+}
+
+async function ensureCategoryColumn(db) {
+  const result = await db.prepare("PRAGMA table_info(vehicles)").all();
+  const columns = result.results || [];
+  const hasCategory = columns.some(column => String(column.name) === "category");
+
+  if (!hasCategory) {
+    await db.prepare(
+      "ALTER TABLE vehicles ADD COLUMN category TEXT NOT NULL DEFAULT 'auto'"
+    ).run();
+  }
 }
 
 function slugify(value) {
@@ -57,6 +70,7 @@ function parseVehicleInput(body) {
   const brand = cleanText(body.brand, 80);
   const name = cleanText(body.name, 100);
   const type = cleanText(body.type, 20);
+  const category = cleanText(body.category, 20).toLowerCase() || "auto";
   const image = cleanText(body.image, 1000);
   const cost = Number(body.cost);
   const stock = Number(body.stock);
@@ -67,6 +81,10 @@ function parseVehicleInput(body) {
 
   if (!VALID_VEHICLE_TYPES.has(type)) {
     return { error: "Clase de vehículo no válida." };
+  }
+
+  if (!VALID_VEHICLE_CATEGORIES.has(category)) {
+    return { error: "El tipo de catálogo debe ser Auto o Moto." };
   }
 
   if (!Number.isFinite(cost) || cost < 0) {
@@ -82,6 +100,7 @@ function parseVehicleInput(body) {
       brand,
       name,
       type,
+      category,
       cost,
       stock,
       image
@@ -99,6 +118,8 @@ export async function onRequestPost(context) {
     const body = await context.request.json();
     const auth = await requireAdmin(context, body);
     if (auth.error) return auth.error;
+
+    await ensureCategoryColumn(context.env.DB);
 
     const action = cleanText(body.action, 30) || "list";
 
@@ -120,14 +141,15 @@ export async function onRequestPost(context) {
 
       await context.env.DB.prepare(`
         INSERT INTO vehicles (
-          id, brand, name, type, cost, stock, image, active, updated_at
+          id, brand, name, type, category, cost, stock, image, active, updated_at
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP)
       `).bind(
         id,
         v.brand,
         v.name,
         v.type,
+        v.category,
         v.cost,
         v.stock,
         v.image
@@ -167,6 +189,7 @@ export async function onRequestPost(context) {
         SET brand = ?,
             name = ?,
             type = ?,
+            category = ?,
             cost = ?,
             stock = ?,
             image = ?,
@@ -176,6 +199,7 @@ export async function onRequestPost(context) {
         v.brand,
         v.name,
         v.type,
+        v.category,
         v.cost,
         v.stock,
         v.image,
@@ -219,7 +243,7 @@ export async function onRequestPost(context) {
     console.error("ADMIN VEHICLES ERROR:", error);
     return json({
       ok: false,
-      error: "No se pudo completar la acción de vehículos."
+      error: "No se pudo completar la acción de vehículos: " + (error?.message || String(error))
     }, 500);
   }
 }

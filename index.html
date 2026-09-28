@@ -39,24 +39,29 @@
       <div class="section-head">
         <div>
           <p class="section-label">CATÁLOGO</p>
-          <h2>Nuestros vehículos</h2>
+          <h2>Nuestros <span id="catalogTypeTitle">Autos</span></h2>
         </div>
-        <p>El precio se calcula automáticamente desde el costo base y la clase del vehículo.</p>
+        <p>Consulta el precio del vehículo y el total final con el TAX 9.8% incluido.</p>
+      </div>
+
+      <div class="category-switch" aria-label="Tipo de catálogo">
+        <button class="category-btn active" type="button" onclick="setCatalogCategory('auto', this)">🚘 Autos</button>
+        <button class="category-btn" type="button" onclick="setCatalogCategory('moto', this)">🏍️ Motos</button>
       </div>
 
       <div class="vehicle-toolbar">
-        <div class="filters">
-          <button class="filter-btn active" onclick="filterCars('todos', this)">Todos</button>
-          <button class="filter-btn" onclick="filterCars('claseS', this)">S</button>
-          <button class="filter-btn" onclick="filterCars('claseA', this)">A</button>
-          <button class="filter-btn" onclick="filterCars('claseB', this)">B</button>
-          <button class="filter-btn" onclick="filterCars('claseC', this)">C</button>
-          <button class="filter-btn" onclick="filterCars('claseD', this)">D</button>
+        <div class="filters" aria-label="Filtrar por clase">
+          <button class="filter-btn active" data-filter="todos" onclick="filterCars('todos', this)">Todas</button>
+          <button class="filter-btn" data-filter="claseS" onclick="filterCars('claseS', this)">S</button>
+          <button class="filter-btn" data-filter="claseA" onclick="filterCars('claseA', this)">A</button>
+          <button class="filter-btn" data-filter="claseB" onclick="filterCars('claseB', this)">B</button>
+          <button class="filter-btn" data-filter="claseC" onclick="filterCars('claseC', this)">C</button>
+          <button class="filter-btn" data-filter="claseD" onclick="filterCars('claseD', this)">D</button>
         </div>
 
         <label class="search-box">
           <span>⌕</span>
-          <input id="searchInput" type="search" placeholder="Buscar vehículo..." oninput="searchCars()">
+          <input id="searchInput" type="search" placeholder="Buscar en el catálogo..." oninput="searchCars()">
         </label>
       </div>
 

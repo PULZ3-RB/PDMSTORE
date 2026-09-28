@@ -37,3 +37,22 @@ CREATE TABLE IF NOT EXISTS sales (
 );
 
 CREATE INDEX IF NOT EXISTS idx_sales_user ON sales(user_id);
+
+-- Catálogo de vehículos (para instalaciones nuevas)
+CREATE TABLE IF NOT EXISTS vehicles (
+  id TEXT PRIMARY KEY,
+  brand TEXT NOT NULL,
+  name TEXT NOT NULL,
+  type TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'auto',
+  cost REAL NOT NULL DEFAULT 0,
+  stock INTEGER NOT NULL DEFAULT 0,
+  image TEXT NOT NULL DEFAULT '',
+  active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_vehicles_active ON vehicles(active);
+CREATE INDEX IF NOT EXISTS idx_vehicles_category ON vehicles(category);
+CREATE INDEX IF NOT EXISTS idx_vehicles_type ON vehicles(type);

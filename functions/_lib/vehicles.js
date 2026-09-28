@@ -24,6 +24,11 @@ export const VALID_VEHICLE_TYPES = new Set([
   "claseD"
 ]);
 
+export const VALID_VEHICLE_CATEGORIES = new Set([
+  "auto",
+  "moto"
+]);
+
 export function calculateSalePrice(cost, type) {
   const markup = MARKUP_BY_CLASS[type] ?? 0;
   return Math.round(Number(cost || 0) * (1 + markup));
@@ -52,14 +57,23 @@ export function getClassName(type) {
   })[type] || type;
 }
 
+export function getCategoryName(category) {
+  return category === "moto" ? "Moto" : "Auto";
+}
+
 function normalizeRow(row) {
   if (!row) return null;
+
+  const category = String(row.category || "auto").toLowerCase() === "moto"
+    ? "moto"
+    : "auto";
 
   return {
     id: String(row.id),
     brand: String(row.brand || ""),
     name: String(row.name || ""),
     type: String(row.type || ""),
+    category,
     cost: Number(row.cost || 0),
     stock: Number(row.stock || 0),
     image: String(row.image || ""),
@@ -81,6 +95,8 @@ export function getPublicVehicle(row) {
     name: vehicle.name,
     type: vehicle.type,
     className: getClassName(vehicle.type),
+    category: vehicle.category,
+    categoryName: getCategoryName(vehicle.category),
     stock: vehicle.stock,
     image: vehicle.image,
     price,
@@ -110,14 +126,8 @@ export function getAdminVehicle(row) {
 export async function getVehicleById(db, id, options = {}) {
   const includeInactive = Boolean(options.includeInactive);
   const sql = includeInactive
-    ? `SELECT id, brand, name, type, cost, stock, image, active
-       FROM vehicles
-       WHERE id = ?
-       LIMIT 1`
-    : `SELECT id, brand, name, type, cost, stock, image, active
-       FROM vehicles
-       WHERE id = ? AND active = 1
-       LIMIT 1`;
+    ? `SELECT * FROM vehicles WHERE id = ? LIMIT 1`
+    : `SELECT * FROM vehicles WHERE id = ? AND active = 1 LIMIT 1`;
 
   const row = await db.prepare(sql).bind(String(id || "")).first();
   return normalizeRow(row);
@@ -126,9 +136,14 @@ export async function getVehicleById(db, id, options = {}) {
 export async function listVehicles(db, options = {}) {
   const includeInactive = Boolean(options.includeInactive);
   const sql = includeInactive
-    ? `SELECT id, brand, name, type, cost, stock, image, active
+    ? `SELECT *
        FROM vehicles
        ORDER BY
+         CASE LOWER(COALESCE(category, 'auto'))
+           WHEN 'auto' THEN 1
+           WHEN 'moto' THEN 2
+           ELSE 9
+         END,
          CASE type
            WHEN 'claseS' THEN 1
            WHEN 'claseA' THEN 2
@@ -139,10 +154,15 @@ export async function listVehicles(db, options = {}) {
          END,
          brand COLLATE NOCASE,
          name COLLATE NOCASE`
-    : `SELECT id, brand, name, type, cost, stock, image, active
+    : `SELECT *
        FROM vehicles
        WHERE active = 1
        ORDER BY
+         CASE LOWER(COALESCE(category, 'auto'))
+           WHEN 'auto' THEN 1
+           WHEN 'moto' THEN 2
+           ELSE 9
+         END,
          CASE type
            WHEN 'claseS' THEN 1
            WHEN 'claseA' THEN 2
@@ -154,6 +174,39 @@ export async function listVehicles(db, options = {}) {
          brand COLLATE NOCASE,
          name COLLATE NOCASE`;
 
-  const result = await db.prepare(sql).all();
-  return (result.results || []).map(normalizeRow);
+  try {
+    const result = await db.prepare(sql).all();
+    return (result.results || []).map(normalizeRow);
+  } catch (error) {
+    // Compatibilidad con la base anterior, antes de agregar la columna category.
+    const oldSql = includeInactive
+      ? `SELECT * FROM vehicles
+         ORDER BY
+           CASE type
+             WHEN 'claseS' THEN 1
+             WHEN 'claseA' THEN 2
+             WHEN 'claseB' THEN 3
+             WHEN 'claseC' THEN 4
+             WHEN 'claseD' THEN 5
+             ELSE 9
+           END,
+           brand COLLATE NOCASE,
+           name COLLATE NOCASE`
+      : `SELECT * FROM vehicles
+         WHERE active = 1
+         ORDER BY
+           CASE type
+             WHEN 'claseS' THEN 1
+             WHEN 'claseA' THEN 2
+             WHEN 'claseB' THEN 3
+             WHEN 'claseC' THEN 4
+             WHEN 'claseD' THEN 5
+             ELSE 9
+           END,
+           brand COLLATE NOCASE,
+           name COLLATE NOCASE`;
+
+    const result = await db.prepare(oldSql).all();
+    return (result.results || []).map(normalizeRow);
+  }
 }

@@ -72,6 +72,25 @@
         <div id="salesList" class="sales-list"></div>
       </article>
     </section>
+
+    <section class="panel-card staff-catalog-card">
+      <div class="card-head staff-catalog-head">
+        <div>
+          <p class="eyebrow">CATÁLOGO</p>
+          <h2>Activar o desactivar vehículos</h2>
+          <p class="muted staff-catalog-note">Puedes cambiar si un auto o moto aparece en el catálogo. No puedes editar sus datos ni eliminarlo.</p>
+        </div>
+        <div class="staff-catalog-search">
+          <input id="staffVehicleSearch" type="search" placeholder="Buscar vehículo...">
+        </div>
+      </div>
+
+      <div id="staffVehiclesList" class="staff-vehicles-list">
+        <div class="empty-state">Cargando vehículos...</div>
+      </div>
+
+      <p id="staffVehicleMessage" class="form-message"></p>
+    </section>
   </main>
 
   <script src="panel.js"></script>

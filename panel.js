@@ -1,5 +1,6 @@
 let currentUser = null;
 let vehicles = [];
+let staffVehicles = [];
 let summary = null;
 
 const commissionRates = {
@@ -36,7 +37,7 @@ async function loadVehicles() {
   vehicles = result.vehicles || [];
   const select = document.getElementById("saleVehicle");
   select.innerHTML = `<option value="">Selecciona un vehículo</option>` + vehicles.map(v =>
-    `<option value="${v.id}">${v.categoryName || (v.category === "moto" ? "Moto" : "Auto")} · ${v.brand} ${v.name} · ${v.className}</option>`
+    `<option value="${escapeHtml(v.id)}">${escapeHtml(v.categoryName || (v.category === "moto" ? "Moto" : "Auto"))} · ${escapeHtml(v.brand)} ${escapeHtml(v.name)} · ${escapeHtml(v.className)}</option>`
   ).join("");
 }
 
@@ -53,8 +54,8 @@ function renderPreview() {
   const rate = commissionRates[vehicle.type] || 0;
   const commission = Math.round(vehicle.price * rate);
   box.innerHTML = `
-    <strong>${vehicle.brand} ${vehicle.name}</strong><br>
-    ${vehicle.categoryName || (vehicle.category === "moto" ? "Moto" : "Auto")} · ${vehicle.className} · Precio ${money(vehicle.price)} · TAX ${money(vehicle.tax)} · Total ${money(vehicle.total)}<br>
+    <strong>${escapeHtml(vehicle.brand)} ${escapeHtml(vehicle.name)}</strong><br>
+    ${escapeHtml(vehicle.categoryName || (vehicle.category === "moto" ? "Moto" : "Auto"))} · ${escapeHtml(vehicle.className)} · Precio ${money(vehicle.price)} · TAX ${money(vehicle.tax)} · Total ${money(vehicle.total)}<br>
     Comisión: ${(rate * 100).toFixed(0)}% = <strong>${money(commission)}</strong>
   `;
 }
@@ -98,6 +99,115 @@ async function loadSales() {
   `).join("");
 }
 
+async function loadStaffVehicles() {
+  const response = await fetch("/api/staff-vehicles", { cache: "no-store" });
+
+  if (response.status === 401) {
+    location.href = "login.html";
+    return;
+  }
+
+  const result = await response.json();
+  if (!response.ok || !result.ok) {
+    throw new Error(result.error || "No se pudo cargar la disponibilidad del catálogo.");
+  }
+
+  staffVehicles = result.vehicles || [];
+  renderStaffVehicles();
+}
+
+function renderStaffVehicles() {
+  const list = document.getElementById("staffVehiclesList");
+  const search = String(document.getElementById("staffVehicleSearch")?.value || "")
+    .trim()
+    .toLowerCase();
+
+  const filtered = staffVehicles.filter(vehicle => {
+    if (!search) return true;
+    const text = `${vehicle.brand} ${vehicle.name} ${vehicle.className} ${vehicle.categoryName}`.toLowerCase();
+    return text.includes(search);
+  });
+
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state">No se encontraron vehículos.</div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(vehicle => {
+    const isActive = Number(vehicle.active) === 1;
+    const categoryIcon = vehicle.category === "moto" ? "🏍️" : "🚘";
+
+    return `
+      <div class="staff-vehicle-row ${isActive ? "" : "staff-vehicle-disabled"}">
+        <div class="staff-vehicle-info">
+          <div class="staff-vehicle-name">${escapeHtml(vehicle.brand)} ${escapeHtml(vehicle.name)}</div>
+          <div class="staff-vehicle-meta">
+            <span>${categoryIcon} ${escapeHtml(vehicle.categoryName)}</span>
+            <span>🏷️ ${escapeHtml(vehicle.className)}</span>
+            <span>Stock: ${Number(vehicle.stock || 0).toLocaleString("en-US")}</span>
+            <span>${money(vehicle.price)}</span>
+          </div>
+        </div>
+
+        <div class="staff-vehicle-controls">
+          <span class="admin-status ${isActive ? "status-active" : "status-inactive"}">
+            ${isActive ? "ACTIVO" : "DESACTIVADO"}
+          </span>
+          <button
+            type="button"
+            class="${isActive ? "mini-danger-btn" : "mini-enable-btn"} staff-toggle-btn"
+            data-vehicle-id="${escapeHtml(vehicle.id)}"
+            data-next-active="${isActive ? "0" : "1"}">
+            ${isActive ? "Desactivar" : "Activar"}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+async function toggleStaffVehicle(button) {
+  const id = button.dataset.vehicleId;
+  const nextActive = Number(button.dataset.nextActive) === 1 ? 1 : 0;
+  const message = document.getElementById("staffVehicleMessage");
+
+  button.disabled = true;
+  message.textContent = "Guardando cambio...";
+
+  try {
+    const response = await fetch("/api/staff-vehicles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "set-active",
+        id,
+        active: nextActive
+      })
+    });
+
+    if (response.status === 401) {
+      location.href = "login.html";
+      return;
+    }
+
+    const result = await response.json();
+    if (!response.ok || !result.ok) {
+      throw new Error(result.error || "No se pudo cambiar la disponibilidad.");
+    }
+
+    staffVehicles = result.vehicles || [];
+    message.textContent = result.message || "Disponibilidad actualizada.";
+    renderStaffVehicles();
+
+    // Actualiza también el selector de ventas: solo muestra vehículos activos.
+    await loadVehicles();
+  } catch (error) {
+    message.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+}
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -108,6 +218,14 @@ function escapeHtml(value) {
 }
 
 document.getElementById("saleVehicle").addEventListener("change", renderPreview);
+
+document.getElementById("staffVehicleSearch").addEventListener("input", renderStaffVehicles);
+
+document.getElementById("staffVehiclesList").addEventListener("click", event => {
+  const button = event.target.closest(".staff-toggle-btn");
+  if (!button) return;
+  toggleStaffVehicle(button);
+});
 
 document.getElementById("saleForm").addEventListener("submit", async event => {
   event.preventDefault();
@@ -151,9 +269,14 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
 (async () => {
   if (!await requireLogin()) return;
   try {
-    await Promise.all([loadVehicles(), loadSales()]);
+    await Promise.all([
+      loadVehicles(),
+      loadSales(),
+      loadStaffVehicles()
+    ]);
   } catch (error) {
     console.error(error);
     document.getElementById("saleMessage").textContent = error.message;
+    document.getElementById("staffVehicleMessage").textContent = error.message;
   }
 })();

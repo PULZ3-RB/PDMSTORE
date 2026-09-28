@@ -379,3 +379,98 @@ button:disabled { opacity: .6; cursor: wait; }
     width: 100%;
   }
 }
+
+/* ================= STAFF CATALOG TOGGLE ================= */
+.staff-catalog-card {
+  margin-top: 18px;
+}
+
+.staff-catalog-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.staff-catalog-note {
+  margin: 8px 0 0;
+  max-width: 720px;
+  font-size: .82rem;
+}
+
+.staff-catalog-search {
+  width: min(360px, 100%);
+  flex: 0 0 auto;
+}
+
+.staff-vehicles-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.staff-vehicle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #0c1117;
+  transition: opacity .2s ease, border-color .2s ease;
+}
+
+.staff-vehicle-row:hover {
+  border-color: #354354;
+}
+
+.staff-vehicle-disabled {
+  opacity: .62;
+}
+
+.staff-vehicle-info {
+  min-width: 0;
+}
+
+.staff-vehicle-name {
+  font-weight: 850;
+  color: white;
+}
+
+.staff-vehicle-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: .74rem;
+}
+
+.staff-vehicle-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.staff-toggle-btn {
+  min-width: 92px;
+}
+
+@media (max-width: 700px) {
+  .staff-catalog-head,
+  .staff-vehicle-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .staff-catalog-search {
+    width: 100%;
+  }
+
+  .staff-vehicle-controls {
+    justify-content: space-between;
+  }
+}

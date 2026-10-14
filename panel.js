@@ -122,7 +122,16 @@ function renderStaffVehicles() {
     .trim()
     .toLowerCase();
 
+  const classFilter = document.getElementById("staffVehicleClassFilter")?.value || "todos";
+  const statusFilter = document.getElementById("staffVehicleStatusFilter")?.value || "todos";
+
   const filtered = staffVehicles.filter(vehicle => {
+    if (classFilter !== "todos" && vehicle.type !== classFilter) return false;
+
+    const isActive = Number(vehicle.active) === 1;
+    if (statusFilter === "activo" && !isActive) return false;
+    if (statusFilter === "desactivado" && isActive) return false;
+
     if (!search) return true;
     const text = `${vehicle.brand} ${vehicle.name} ${vehicle.className} ${vehicle.categoryName}`.toLowerCase();
     return text.includes(search);
@@ -220,6 +229,8 @@ function escapeHtml(value) {
 document.getElementById("saleVehicle").addEventListener("change", renderPreview);
 
 document.getElementById("staffVehicleSearch").addEventListener("input", renderStaffVehicles);
+document.getElementById("staffVehicleClassFilter").addEventListener("change", renderStaffVehicles);
+document.getElementById("staffVehicleStatusFilter").addEventListener("change", renderStaffVehicles);
 
 document.getElementById("staffVehiclesList").addEventListener("click", event => {
   const button = event.target.closest(".staff-toggle-btn");
@@ -266,6 +277,39 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
   location.href = "login.html";
 });
 
+
+
+function millisecondsUntilNextPanamaClassARotation() {
+  const PANAMA_OFFSET_MS = 5 * 60 * 60 * 1000;
+  const nowMs = Date.now();
+  const panamaNow = new Date(nowMs - PANAMA_OFFSET_MS);
+  const year = panamaNow.getUTCFullYear();
+  const month = panamaNow.getUTCMonth();
+  const day = panamaNow.getUTCDate();
+  const hour = panamaNow.getUTCHours();
+
+  const nextUtcMs = hour < 12
+    ? Date.UTC(year, month, day, 17, 0, 2)
+    : Date.UTC(year, month, day + 1, 5, 0, 2);
+
+  return Math.max(1000, nextUtcMs - nowMs);
+}
+
+function scheduleClassARotationRefresh() {
+  clearTimeout(window.__classARotationTimer);
+  window.__classARotationTimer = setTimeout(async () => {
+    try {
+      await Promise.all([loadVehicles(), loadStaffVehicles()]);
+      document.getElementById("staffVehicleMessage").textContent =
+        "Rotación de Clase A actualizada automáticamente.";
+    } catch (error) {
+      console.error(error);
+    }
+    scheduleClassARotationRefresh();
+  }, millisecondsUntilNextPanamaClassARotation());
+}
+
+
 (async () => {
   if (!await requireLogin()) return;
   try {
@@ -274,6 +318,7 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
       loadSales(),
       loadStaffVehicles()
     ]);
+    scheduleClassARotationRefresh();
   } catch (error) {
     console.error(error);
     document.getElementById("saleMessage").textContent = error.message;

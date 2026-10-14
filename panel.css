@@ -474,3 +474,32 @@ button:disabled { opacity: .6; cursor: wait; }
     justify-content: space-between;
   }
 }
+
+
+/* ================= FILTROS CATÁLOGO STAFF / ADMIN ================= */
+.staff-catalog-filters {
+  width: min(720px, 100%);
+  display: grid;
+  grid-template-columns: minmax(190px, 1.4fr) minmax(145px, .8fr) minmax(180px, 1fr);
+  gap: 9px;
+  flex: 0 1 720px;
+}
+
+.vehicle-admin-toolbar {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.5fr) minmax(145px, .7fr) minmax(180px, .9fr);
+  gap: 9px;
+  align-items: center;
+}
+
+.vehicle-admin-toolbar input {
+  max-width: none;
+}
+
+@media (max-width: 820px) {
+  .staff-catalog-filters,
+  .vehicle-admin-toolbar {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}

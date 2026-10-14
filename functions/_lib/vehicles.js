@@ -1,4 +1,5 @@
 export const TAX_RATE = 0.098;
+export const LOAN_DOWN_PAYMENT_RATE = 0.30;
 
 export const MARKUP_BY_CLASS = {
   claseD: 1.00,
@@ -42,6 +43,10 @@ export function calculateTotalWithTax(price) {
   return Number(price || 0) + calculateTax(price);
 }
 
+export function calculateLoanDownPayment(price) {
+  return Math.round(Number(price || 0) * LOAN_DOWN_PAYMENT_RATE);
+}
+
 export function calculateCommission(price, type) {
   const rate = COMMISSION_BY_CLASS[type] ?? 0;
   return Math.round(Number(price || 0) * rate);
@@ -81,6 +86,60 @@ function normalizeRow(row) {
   };
 }
 
+function formatD1Timestamp(date) {
+  return date.toISOString().slice(0, 19).replace("T", " ");
+}
+
+/**
+ * Devuelve el último corte de rotación de Clase A usando hora de Panamá.
+ * Panamá es UTC-5 todo el año: 00:00 = 05:00 UTC y 12:00 = 17:00 UTC.
+ */
+export function getLatestPanamaClassABoundary(now = new Date()) {
+  const PANAMA_OFFSET_MS = 5 * 60 * 60 * 1000;
+  const panamaNow = new Date(now.getTime() - PANAMA_OFFSET_MS);
+
+  const year = panamaNow.getUTCFullYear();
+  const month = panamaNow.getUTCMonth();
+  const day = panamaNow.getUTCDate();
+  const localHour = panamaNow.getUTCHours();
+  const boundaryLocalHour = localHour >= 12 ? 12 : 0;
+
+  return new Date(Date.UTC(
+    year,
+    month,
+    day,
+    boundaryLocalHour + 5,
+    0,
+    0
+  ));
+}
+
+/**
+ * Desactiva automáticamente TODOS los vehículos Clase A (autos y motos)
+ * que estaban activos antes del
+ * último corte de 00:00 / 12:00 (hora de Panamá).
+ *
+ * Si un trabajador/admin vuelve a activar un Clase A DESPUÉS del corte,
+ * queda activo hasta el próximo corte.
+ */
+export async function ensureClassARotation(db, now = new Date()) {
+  const boundary = formatD1Timestamp(getLatestPanamaClassABoundary(now));
+
+  const result = await db.prepare(`
+    UPDATE vehicles
+    SET active = 0,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE type = 'claseA'
+      AND active = 1
+      AND datetime(updated_at) < datetime(?)
+  `).bind(boundary).run();
+
+  return {
+    boundary,
+    deactivated: Number(result.meta?.changes || 0)
+  };
+}
+
 export function getPublicVehicle(row) {
   const vehicle = normalizeRow(row);
   if (!vehicle) return null;
@@ -88,6 +147,7 @@ export function getPublicVehicle(row) {
   const price = calculateSalePrice(vehicle.cost, vehicle.type);
   const tax = calculateTax(price);
   const total = calculateTotalWithTax(price);
+  const loanDownPayment = calculateLoanDownPayment(price);
 
   return {
     id: vehicle.id,
@@ -102,6 +162,7 @@ export function getPublicVehicle(row) {
     price,
     tax,
     total,
+    loanDownPayment,
     availability: vehicle.stock > 0 ? "inmediata" : "reserva"
   };
 }
@@ -124,6 +185,8 @@ export function getAdminVehicle(row) {
 }
 
 export async function getVehicleById(db, id, options = {}) {
+  await ensureClassARotation(db);
+
   const includeInactive = Boolean(options.includeInactive);
   const sql = includeInactive
     ? `SELECT * FROM vehicles WHERE id = ? LIMIT 1`
@@ -134,6 +197,8 @@ export async function getVehicleById(db, id, options = {}) {
 }
 
 export async function listVehicles(db, options = {}) {
+  await ensureClassARotation(db);
+
   const includeInactive = Boolean(options.includeInactive);
   const sql = includeInactive
     ? `SELECT *
@@ -178,7 +243,7 @@ export async function listVehicles(db, options = {}) {
     const result = await db.prepare(sql).all();
     return (result.results || []).map(normalizeRow);
   } catch (error) {
-    // Compatibilidad con la base anterior, antes de agregar la columna category.
+    // Compatibilidad con una base antigua que todavía no tenga category.
     const oldSql = includeInactive
       ? `SELECT * FROM vehicles
          ORDER BY

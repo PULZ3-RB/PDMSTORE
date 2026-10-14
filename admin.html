@@ -131,6 +131,21 @@
 
         <div class="vehicle-admin-toolbar">
           <input id="vehicleAdminSearch" placeholder="Buscar por marca, modelo o ID...">
+
+          <select id="vehicleAdminClassFilter" aria-label="Filtrar por clase">
+            <option value="todos">Todas las clases</option>
+            <option value="claseA">Clase A</option>
+            <option value="claseB">Clase B</option>
+            <option value="claseC">Clase C</option>
+            <option value="claseD">Clase D</option>
+            <option value="claseS">Clase S</option>
+          </select>
+
+          <select id="vehicleAdminStatusFilter" aria-label="Filtrar por estado">
+            <option value="todos">Activos y desactivados</option>
+            <option value="activo">Solo activos</option>
+            <option value="desactivado">Solo desactivados</option>
+          </select>
         </div>
 
         <div class="employee-table-wrap">
@@ -306,6 +321,7 @@
       const price = Math.round(cost * (1 + markup));
       const tax = Math.round(price * TAX_RATE);
       const total = price + tax;
+      const loanDownPayment = Math.round(price * 0.30);
       const availability = stock > 0
         ? `Unidad inmediata · ${stock} disponible${stock === 1 ? '' : 's'}`
         : 'Solo por reserva';
@@ -317,6 +333,7 @@
         <span>Venta <strong>${money(price)}</strong></span>
         <span>TAX 9.8% <strong>${money(tax)}</strong></span>
         <span>Total <strong>${money(total)}</strong></span>
+        <span>Inicial préstamo 30% <strong>${money(loanDownPayment)}</strong></span>
         <span>Estado <strong>${escapeHtml(availability)}</strong></span>
       `;
     }
@@ -352,9 +369,17 @@
 
     function renderAdminVehicles() {
       const query = document.getElementById('vehicleAdminSearch').value.toLowerCase().trim();
+      const classFilter = document.getElementById('vehicleAdminClassFilter').value;
+      const statusFilter = document.getElementById('vehicleAdminStatusFilter').value;
       const body = document.getElementById('vehicleAdminBody');
 
       const filtered = adminVehicles.filter(v => {
+        if (classFilter !== 'todos' && v.type !== classFilter) return false;
+
+        const isActive = Number(v.active) === 1;
+        if (statusFilter === 'activo' && !isActive) return false;
+        if (statusFilter === 'desactivado' && isActive) return false;
+
         if (!query) return true;
         return `${v.id} ${v.brand} ${v.name} ${v.className} ${v.categoryName || ''}`.toLowerCase().includes(query);
       });
@@ -522,11 +547,46 @@
       }
     }
 
+
+    function millisecondsUntilNextPanamaClassARotation() {
+      const PANAMA_OFFSET_MS = 5 * 60 * 60 * 1000;
+      const nowMs = Date.now();
+      const panamaNow = new Date(nowMs - PANAMA_OFFSET_MS);
+      const year = panamaNow.getUTCFullYear();
+      const month = panamaNow.getUTCMonth();
+      const day = panamaNow.getUTCDate();
+      const hour = panamaNow.getUTCHours();
+
+      const nextUtcMs = hour < 12
+        ? Date.UTC(year, month, day, 17, 0, 2)
+        : Date.UTC(year, month, day + 1, 5, 0, 2);
+
+      return Math.max(1000, nextUtcMs - nowMs);
+    }
+
+    function scheduleClassARotationRefresh() {
+      clearTimeout(window.__classARotationTimer);
+      window.__classARotationTimer = setTimeout(async () => {
+        if (getSetupKey()) {
+          try {
+            await loadAdminVehicles();
+            document.getElementById('vehicleMessage').textContent =
+              'Rotación de Clase A actualizada automáticamente.';
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        scheduleClassARotationRefresh();
+      }, millisecondsUntilNextPanamaClassARotation());
+    }
+
     document.getElementById('vehicleCategory').addEventListener('change', renderVehiclePreview);
     document.getElementById('vehicleType').addEventListener('change', renderVehiclePreview);
     document.getElementById('vehicleCost').addEventListener('input', renderVehiclePreview);
     document.getElementById('vehicleStock').addEventListener('input', renderVehiclePreview);
     document.getElementById('vehicleAdminSearch').addEventListener('input', renderAdminVehicles);
+    document.getElementById('vehicleAdminClassFilter').addEventListener('change', renderAdminVehicles);
+    document.getElementById('vehicleAdminStatusFilter').addEventListener('change', renderAdminVehicles);
 
     document.getElementById('refreshVehiclesBtn').addEventListener('click', loadAdminVehicles);
     document.getElementById('cancelEditVehicleBtn').addEventListener('click', resetVehicleForm);
@@ -666,6 +726,7 @@
     });
 
     renderVehiclePreview();
+    scheduleClassARotationRefresh();
   </script>
 </body>
 </html>

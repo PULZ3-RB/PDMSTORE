@@ -80,8 +80,23 @@
           <h2>Activar o desactivar vehículos</h2>
           <p class="muted staff-catalog-note">Puedes cambiar si un auto o moto aparece en el catálogo. No puedes editar sus datos ni eliminarlo.</p>
         </div>
-        <div class="staff-catalog-search">
+        <div class="staff-catalog-filters">
           <input id="staffVehicleSearch" type="search" placeholder="Buscar vehículo...">
+
+          <select id="staffVehicleClassFilter" aria-label="Filtrar por clase">
+            <option value="todos">Todas las clases</option>
+            <option value="claseA">Clase A</option>
+            <option value="claseB">Clase B</option>
+            <option value="claseC">Clase C</option>
+            <option value="claseD">Clase D</option>
+            <option value="claseS">Clase S</option>
+          </select>
+
+          <select id="staffVehicleStatusFilter" aria-label="Filtrar por estado">
+            <option value="todos">Activos y desactivados</option>
+            <option value="activo">Solo activos</option>
+            <option value="desactivado">Solo desactivados</option>
+          </select>
         </div>
       </div>
 

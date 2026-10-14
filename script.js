@@ -6,6 +6,7 @@ let currentFilter = "todos";
 let currentCategory = "auto";
 
 const empleados = [
+  { name: "Raven", phone: "605-042-3584", color: "#2783DE" },
   { name: "Nico Blaze", phone: "354-800-5830", color: "#46A171" },
   { name: "Emmett Hobbs", phone: "265-348-1214", color: "#46A171" }
 ];
@@ -125,6 +126,10 @@ function renderCars(filter = currentFilter) {
               <span>Con TAX 9.8%</span>
               <strong>$${formatMoney(vehicle.total)}</strong>
             </div>
+            <div class="car-price-block loan-price-block">
+              <span>Préstamo · Inicial 30%</span>
+              <strong>$${formatMoney(vehicle.loanDownPayment)}</strong>
+            </div>
           </div>
 
           <div class="car-actions">
@@ -176,6 +181,7 @@ function openVehicleModal(id) {
   document.getElementById("modalAvailability").textContent = availabilityText(vehicle);
   document.getElementById("modalTax").textContent = `$${formatMoney(vehicle.tax)}`;
   document.getElementById("modalTotal").textContent = `$${formatMoney(vehicle.total)}`;
+  document.getElementById("modalLoanDownPayment").textContent = `$${formatMoney(vehicle.loanDownPayment)}`;
 
   const imageBox = document.getElementById("modalImage");
   imageBox.innerHTML = vehicle.image
@@ -212,6 +218,7 @@ function preselect(id) {
   document.getElementById("reservationBasePrice").textContent = `$${formatMoney(vehicle.price)}`;
   document.getElementById("reservationTax").textContent = `$${formatMoney(vehicle.tax)}`;
   document.getElementById("reservationTotal").textContent = `$${formatMoney(vehicle.total)}`;
+  document.getElementById("reservationLoanDownPayment").textContent = `$${formatMoney(vehicle.loanDownPayment)}`;
 
   const imageBox = document.getElementById("selectedCarImage");
   imageBox.innerHTML = vehicle.image
@@ -298,5 +305,34 @@ function toggleMenu() {
   document.getElementById("navLinks")?.classList.toggle("open");
 }
 
+
+
+// Mantiene una página abierta sincronizada con la rotación de Clase A.
+// Panamá: 00:00 y 12:00. El backend también valida el corte en cada petición.
+function millisecondsUntilNextPanamaClassARotation() {
+  const PANAMA_OFFSET_MS = 5 * 60 * 60 * 1000;
+  const nowMs = Date.now();
+  const panamaNow = new Date(nowMs - PANAMA_OFFSET_MS);
+  const year = panamaNow.getUTCFullYear();
+  const month = panamaNow.getUTCMonth();
+  const day = panamaNow.getUTCDate();
+  const hour = panamaNow.getUTCHours();
+
+  const nextUtcMs = hour < 12
+    ? Date.UTC(year, month, day, 17, 0, 2)      // 12:00 Panamá
+    : Date.UTC(year, month, day + 1, 5, 0, 2); // 00:00 Panamá
+
+  return Math.max(1000, nextUtcMs - nowMs);
+}
+
+function scheduleClassARotationRefresh() {
+  clearTimeout(window.__classARotationTimer);
+  window.__classARotationTimer = setTimeout(async () => {
+    await loadVehicles();
+    scheduleClassARotationRefresh();
+  }, millisecondsUntilNextPanamaClassARotation());
+}
+
 renderEmpleados();
 loadVehicles();
+scheduleClassARotationRefresh();

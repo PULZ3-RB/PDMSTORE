@@ -102,16 +102,24 @@ export function getLatestPanamaClassABoundary(now = new Date()) {
   const month = panamaNow.getUTCMonth();
   const day = panamaNow.getUTCDate();
   const localHour = panamaNow.getUTCHours();
-  const boundaryLocalHour = localHour >= 12 ? 12 : 0;
 
-  return new Date(Date.UTC(
-    year,
-    month,
-    day,
-    boundaryLocalHour + 5,
-    0,
-    0
-  ));
+  // Cortes en Panamá:
+  // 1:00 AM  = 06:00 UTC
+  // 1:00 PM  = 18:00 UTC
+
+  if (localHour >= 13) {
+    // Último corte: hoy a la 1:00 PM
+    return new Date(Date.UTC(year, month, day, 18, 0, 0));
+  }
+
+  if (localHour >= 1) {
+    // Último corte: hoy a la 1:00 AM
+    return new Date(Date.UTC(year, month, day, 6, 0, 0));
+  }
+
+  // Entre 12:00 AM y 12:59 AM,
+  // el último corte fue ayer a la 1:00 PM.
+  return new Date(Date.UTC(year, month, day - 1, 18, 0, 0));
 }
 
 /**

@@ -52,7 +52,7 @@ button { color: inherit; }
   display: flex;
   align-items: center;
   padding: 120px clamp(22px, 7vw, 110px) 70px;
-  background-image: url("https://kappa.lol/LGT4jb");
+  background-image: url("https://kappa.lol/LGT4jb.png");
   background-size: cover;
   background-position: center;
 }

@@ -51,17 +51,68 @@ button { color: inherit; }
   position: relative;
   display: flex;
   align-items: center;
+  overflow: hidden;
   padding: 120px clamp(22px, 7vw, 110px) 70px;
-  background-image: url("https://kappa.lol/LGT4jb.png");
+}
+
+.hero-slider {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #07090d;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
+  opacity: 0;
+  transform: scale(1.015);
+  transition: opacity 1.25s ease-in-out, transform 6s ease;
 }
+
+.hero-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(90deg, rgba(4,7,11,.94) 0%, rgba(4,7,11,.68) 40%, rgba(4,7,11,.18) 70%, rgba(4,7,11,.52) 100%);
 }
-.hero-content { position: relative; z-index: 1; max-width: 720px; }
+.hero-content { position: relative; z-index: 2; max-width: 720px; }
+
+.hero-dots {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.hero-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.52);
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  cursor: pointer;
+  transition: .25s ease;
+}
+
+.hero-dot.active {
+  width: 28px;
+  border-color: var(--blue-2);
+  background: var(--blue-2);
+}
 .eyebrow, .section-label { margin: 0 0 12px; color: var(--blue-2); font-size: .72rem; font-weight: 800; letter-spacing: .24em; }
 .hero h1 { margin: 0; font-size: clamp(3.4rem, 8vw, 7.4rem); line-height: .88; letter-spacing: -.065em; }
 .hero h1 span { color: var(--blue-2); }
@@ -188,7 +239,8 @@ footer { padding: 60px 20px; text-align: center; border-top: 1px solid var(--bor
   .navbar nav { display: none; position: absolute; top: 74px; left: 0; width: 100%; flex-direction: column; align-items: stretch; gap: 10px; padding: 18px; background: #0a0e14; border-bottom: 1px solid var(--border); }
   .navbar nav.open { display: flex; }
   .menu-btn { display: block; }
-  .hero { min-height: 760px; background-position: 62% center; }
+  .hero { min-height: 760px; }
+  .hero-slide { background-position: 62% center; }
   .hero-overlay { background: linear-gradient(0deg, rgba(4,7,11,.94) 0%, rgba(4,7,11,.56) 65%, rgba(4,7,11,.4) 100%); }
   .hero h1 { font-size: clamp(3rem, 16vw, 5rem); }
   .vehicle-toolbar { display: block; }

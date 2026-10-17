@@ -23,7 +23,26 @@
 
   <main>
     <section id="inicio" class="hero">
+      <div class="hero-slider" aria-hidden="true">
+        <div class="hero-slide active"
+          style="background-image: url('https://kappa.lol/LGT4jb');">
+        </div>
+
+        <div class="hero-slide"
+          style="background-image: url('https://kappa.lol/7VPzy4');">
+        </div>
+
+        <div class="hero-slide"
+          style="background-image: url('https://kappa.lol/xpo46f');">
+        </div>
+
+        <div class="hero-slide"
+          style="background-image: url('https://kappa.lol/Zqbvxq');">
+        </div>
+      </div>
+
       <div class="hero-overlay"></div>
+
       <div class="hero-content">
         <p class="eyebrow">LOS SANTOS</p>
         <h1>Premium Deluxe<br><span>Motorsport</span></h1>
@@ -32,6 +51,11 @@
           <a class="btn btn-primary" href="#vehiculos">Ver catálogo</a>
           <a class="btn btn-outline" href="login.html">Panel de empleados</a>
         </div>
+      </div>
+
+      <div class="hero-dots" aria-label="Imágenes de portada">
+        <button class="hero-dot active" type="button" aria-label="Mostrar imagen 1" onclick="showHeroSlide(0)"></button>
+        <button class="hero-dot" type="button" aria-label="Mostrar imagen 2" onclick="showHeroSlide(1)"></button>
       </div>
     </section>
 

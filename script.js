@@ -335,6 +335,53 @@ function scheduleClassARotationRefresh() {
   }, millisecondsUntilNextPanamaClassARotation());
 }
 
+// ===== Carrusel de portada =====
+let currentHeroSlide = 0;
+let heroSliderTimer = null;
+const HERO_SLIDE_INTERVAL = 6000; // 6 segundos
+
+function showHeroSlide(index) {
+  const slides = [...document.querySelectorAll(".hero-slide")];
+  const dots = [...document.querySelectorAll(".hero-dot")];
+  if (!slides.length) return;
+
+  currentHeroSlide = ((Number(index) || 0) + slides.length) % slides.length;
+
+  slides.forEach((slide, i) => {
+    const active = i === currentHeroSlide;
+    slide.classList.toggle("active", active);
+    slide.setAttribute("aria-hidden", active ? "false" : "true");
+  });
+
+  dots.forEach((dot, i) => dot.classList.toggle("active", i === currentHeroSlide));
+  restartHeroSlider();
+}
+
+function nextHeroSlide() {
+  const slides = document.querySelectorAll(".hero-slide");
+  if (slides.length < 2) return;
+  showHeroSlide(currentHeroSlide + 1);
+}
+
+function restartHeroSlider() {
+  clearInterval(heroSliderTimer);
+  const slides = document.querySelectorAll(".hero-slide");
+  if (slides.length < 2) return;
+  heroSliderTimer = setInterval(() => {
+    currentHeroSlide = (currentHeroSlide + 1) % slides.length;
+    slides.forEach((slide, i) => slide.classList.toggle("active", i === currentHeroSlide));
+    document.querySelectorAll(".hero-dot").forEach((dot, i) => dot.classList.toggle("active", i === currentHeroSlide));
+  }, HERO_SLIDE_INTERVAL);
+}
+
+function initHeroSlider() {
+  const slides = document.querySelectorAll(".hero-slide");
+  if (!slides.length) return;
+  slides.forEach((slide, i) => slide.setAttribute("aria-hidden", i === 0 ? "false" : "true"));
+  restartHeroSlider();
+}
+
 renderEmpleados();
 loadVehicles();
 scheduleClassARotationRefresh();
+initHeroSlider();

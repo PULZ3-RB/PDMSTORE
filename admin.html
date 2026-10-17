@@ -557,9 +557,11 @@
       const day = panamaNow.getUTCDate();
       const hour = panamaNow.getUTCHours();
 
-      const nextUtcMs = hour < 12
-        ? Date.UTC(year, month, day, 17, 0, 2)
-        : Date.UTC(year, month, day + 1, 5, 0, 2);
+      const nextUtcMs = hour < 1
+        ? Date.UTC(year, month, day, 6, 0, 2)
+        : hour < 13
+          ? Date.UTC(year, month, day, 18, 0, 2)
+          : Date.UTC(year, month, day + 1, 6, 0, 2);
 
       return Math.max(1000, nextUtcMs - nowMs);
     }

@@ -38,12 +38,19 @@
         </div>
 
         <form id="saleForm">
-          <label>Vehículo</label>
-          <select id="saleVehicle" required>
-            <option value="">Selecciona un vehículo</option>
-          </select>
+          <label for="saleVehicleSearch">Vehículo</label>
+          <div class="sale-vehicle-search-wrap">
+            <input
+              id="saleVehicleSearch"
+              type="search"
+              autocomplete="off"
+              placeholder="Escribe el nombre del vehículo..."
+              aria-label="Buscar vehículo para registrar la venta">
+            <input id="saleVehicle" type="hidden">
+            <div id="saleVehicleSuggestions" class="sale-vehicle-suggestions" hidden></div>
+          </div>
 
-          <div id="vehiclePreview" class="sale-preview">Selecciona un vehículo para ver precio y comisión.</div>
+          <div id="vehiclePreview" class="sale-preview">Escribe el nombre del vehículo y selecciónalo para ver precio y comisión.</div>
 
           <label>Cliente</label>
           <input id="clientName" maxlength="120" placeholder="Nombre del cliente" required>
@@ -73,12 +80,69 @@
       </article>
     </section>
 
+    <section class="panel-card staff-add-card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">NUEVO VEHÍCULO</p>
+          <h2>Agregar al catálogo</h2>
+          <p class="muted staff-catalog-note">Puedes agregar autos o motos. El precio de venta se calcula automáticamente según la clase. Cada alta queda registrada en Discord.</p>
+        </div>
+      </div>
+
+      <form id="staffAddVehicleForm" class="staff-add-form">
+        <div>
+          <label for="staffAddBrand">Marca</label>
+          <input id="staffAddBrand" maxlength="80" placeholder="Ej. Annis" required>
+        </div>
+        <div>
+          <label for="staffAddName">Modelo</label>
+          <input id="staffAddName" maxlength="100" placeholder="Ej. Remus" required>
+        </div>
+        <div>
+          <label for="staffAddCategory">Tipo</label>
+          <select id="staffAddCategory" required>
+            <option value="auto">Auto</option>
+            <option value="moto">Moto</option>
+          </select>
+        </div>
+        <div>
+          <label for="staffAddType">Clase</label>
+          <select id="staffAddType" required>
+            <option value="claseA">Clase A</option>
+            <option value="claseB">Clase B</option>
+            <option value="claseC">Clase C</option>
+            <option value="claseD">Clase D</option>
+            <option value="claseS">Clase S</option>
+          </select>
+        </div>
+        <div>
+          <label for="staffAddCost">Costo base</label>
+          <input id="staffAddCost" type="number" min="0" step="1" placeholder="95000" required>
+        </div>
+        <div>
+          <label for="staffAddStock">Stock</label>
+          <input id="staffAddStock" type="number" min="0" step="1" value="0" required>
+        </div>
+        <div class="staff-add-wide">
+          <label for="staffAddImage">URL de imagen</label>
+          <input id="staffAddImage" type="url" maxlength="1000" placeholder="https://...">
+        </div>
+
+        <div id="staffAddPricePreview" class="sale-preview staff-add-wide">Introduce el costo base para ver el precio que aparecerá en el catálogo.</div>
+
+        <div class="staff-add-wide">
+          <button id="staffAddVehicleBtn" class="primary-btn" type="submit">Agregar vehículo</button>
+          <p id="staffAddVehicleMessage" class="form-message"></p>
+        </div>
+      </form>
+    </section>
+
     <section class="panel-card staff-catalog-card">
       <div class="card-head staff-catalog-head">
         <div>
           <p class="eyebrow">CATÁLOGO</p>
           <h2>Activar o desactivar vehículos</h2>
-          <p class="muted staff-catalog-note">Puedes cambiar si un auto o moto aparece en el catálogo. No puedes editar sus datos ni eliminarlo.</p>
+          <p class="muted staff-catalog-note">Puedes activar o desactivar autos y motos del catálogo. También puedes agregar vehículos nuevos, pero no editar ni eliminar los existentes.</p>
         </div>
         <div class="staff-catalog-filters">
           <input id="staffVehicleSearch" type="search" placeholder="Buscar vehículo...">

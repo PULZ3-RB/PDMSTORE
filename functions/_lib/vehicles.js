@@ -92,7 +92,7 @@ function formatD1Timestamp(date) {
 
 /**
  * Devuelve el último corte de rotación de Clase A usando hora de Panamá.
- * Panamá es UTC-5 todo el año: 00:00 = 05:00 UTC y 12:00 = 17:00 UTC.
+ * Panamá es UTC-5 todo el año: 01:00 = 06:00 UTC y 13:00 = 18:00 UTC.
  */
 export function getLatestPanamaClassABoundary(now = new Date()) {
   const PANAMA_OFFSET_MS = 5 * 60 * 60 * 1000;
@@ -103,29 +103,24 @@ export function getLatestPanamaClassABoundary(now = new Date()) {
   const day = panamaNow.getUTCDate();
   const localHour = panamaNow.getUTCHours();
 
-  // Cortes en Panamá:
-  // 1:00 AM  = 06:00 UTC
-  // 1:00 PM  = 18:00 UTC
-
   if (localHour >= 13) {
-    // Último corte: hoy a la 1:00 PM
+    // Último corte: hoy a la 1:00 PM (18:00 UTC).
     return new Date(Date.UTC(year, month, day, 18, 0, 0));
   }
 
   if (localHour >= 1) {
-    // Último corte: hoy a la 1:00 AM
+    // Último corte: hoy a la 1:00 AM (06:00 UTC).
     return new Date(Date.UTC(year, month, day, 6, 0, 0));
   }
 
-  // Entre 12:00 AM y 12:59 AM,
-  // el último corte fue ayer a la 1:00 PM.
+  // Entre 12:00 AM y 12:59 AM el último corte fue ayer a la 1:00 PM.
   return new Date(Date.UTC(year, month, day - 1, 18, 0, 0));
 }
 
 /**
  * Desactiva automáticamente TODOS los vehículos Clase A (autos y motos)
  * que estaban activos antes del
- * último corte de 00:00 / 12:00 (hora de Panamá).
+ * último corte de 01:00 / 13:00 (hora de Panamá).
  *
  * Si un trabajador/admin vuelve a activar un Clase A DESPUÉS del corte,
  * queda activo hasta el próximo corte.

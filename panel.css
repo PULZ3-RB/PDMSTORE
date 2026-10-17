@@ -503,3 +503,111 @@ button:disabled { opacity: .6; cursor: wait; }
     width: 100%;
   }
 }
+
+/* ================= BUSCADOR DE VENTAS ================= */
+.sale-vehicle-search-wrap {
+  position: relative;
+}
+
+.sale-vehicle-suggestions {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #0b0f14;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, .45);
+}
+
+.sale-vehicle-suggestions[hidden] {
+  display: none;
+}
+
+.sale-vehicle-option {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  background: transparent;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sale-vehicle-option:last-child {
+  border-bottom: 0;
+}
+
+.sale-vehicle-option:hover,
+.sale-vehicle-option:focus {
+  background: var(--surface2);
+  outline: none;
+}
+
+.sale-vehicle-option-name {
+  font-weight: 800;
+}
+
+.sale-vehicle-option-meta {
+  color: var(--muted);
+  font-size: .72rem;
+  text-align: right;
+}
+
+.sale-vehicle-no-results {
+  padding: 16px;
+  color: var(--muted);
+  font-size: .8rem;
+}
+
+/* ================= AGREGAR VEHÍCULO STAFF ================= */
+.staff-add-card {
+  margin-top: 18px;
+}
+
+.staff-add-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 14px;
+  margin-top: 10px;
+}
+
+.staff-add-wide {
+  grid-column: 1 / -1;
+}
+
+.staff-add-form .primary-btn {
+  max-width: 280px;
+}
+
+@media (max-width: 700px) {
+  .staff-add-form {
+    grid-template-columns: 1fr;
+  }
+
+  .staff-add-wide {
+    grid-column: auto;
+  }
+
+  .staff-add-form .primary-btn {
+    max-width: none;
+  }
+
+  .sale-vehicle-option {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sale-vehicle-option-meta {
+    text-align: left;
+  }
+}

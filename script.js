@@ -6,9 +6,9 @@ let currentFilter = "todos";
 let currentCategory = "auto";
 
 const empleados = [
+  { name: "Raven", phone: "605-042-3584", color: "#2783DE" },
   { name: "Nico Blaze", phone: "354-800-5830", color: "#46A171" },
-  { name: "Seferino Quintero", phone: "559-591-9646", color: "#46A171" },
-  /**{ name: "Emmett Hobbs", phone: "265-348-1214", color: "#46A171" }**/
+  { name: "Emmett Hobbs", phone: "265-348-1214", color: "#46A171" }
 ];
 
 function formatMoney(value) {
@@ -308,7 +308,7 @@ function toggleMenu() {
 
 
 // Mantiene una página abierta sincronizada con la rotación de Clase A.
-// Panamá: 00:00 y 12:00. El backend también valida el corte en cada petición.
+// Panamá: 01:00 y 13:00. El backend también valida el corte en cada petición.
 function millisecondsUntilNextPanamaClassARotation() {
   const PANAMA_OFFSET_MS = 5 * 60 * 60 * 1000;
   const nowMs = Date.now();
@@ -318,9 +318,11 @@ function millisecondsUntilNextPanamaClassARotation() {
   const day = panamaNow.getUTCDate();
   const hour = panamaNow.getUTCHours();
 
-  const nextUtcMs = hour < 12
-    ? Date.UTC(year, month, day, 17, 0, 2)      // 12:00 Panamá
-    : Date.UTC(year, month, day + 1, 5, 0, 2); // 00:00 Panamá
+  const nextUtcMs = hour < 1
+    ? Date.UTC(year, month, day, 6, 0, 2)       // 1:00 AM Panamá
+    : hour < 13
+      ? Date.UTC(year, month, day, 18, 0, 2)    // 1:00 PM Panamá
+      : Date.UTC(year, month, day + 1, 6, 0, 2); // 1:00 AM Panamá del día siguiente
 
   return Math.max(1000, nextUtcMs - nowMs);
 }
